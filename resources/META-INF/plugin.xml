@@ -1,0 +1,33 @@
+<idea-plugin>
+  <id>com.aegamesi.java_visualizer.plugin</id>
+  <name>Java Visualizer</name>
+  <version>2.0.0</version>
+  <vendor email="eli.lipsitz@berkeley.edu" url="https://github.com/aegamesi">Eli Lipsitz</vendor>
+
+  <description><![CDATA[
+      Debugging aid: stack/heap visualizer (via Java Tutor).
+    ]]></description>
+
+  <change-notes><![CDATA[
+      Initial separation of CS 61B style checker and visualizer.
+    ]]>
+</change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="181.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <project-components>
+    <component>
+      <implementation-class>com.aegamesi.java_visualizer.plugin.JavaVisualizerComponent</implementation-class>
+
+      <loadForDefaultProject />
+    </component>
+  </project-components>
+
+</idea-plugin>
