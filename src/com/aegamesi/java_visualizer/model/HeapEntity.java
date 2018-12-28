@@ -1,6 +1,8 @@
 package com.aegamesi.java_visualizer.model;
 
-public class HeapEntity {
+import java.io.Serializable;
+
+public class HeapEntity implements Serializable {
 	public long id;
 	public Type type;
 	public String label;

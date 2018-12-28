@@ -1,6 +1,8 @@
 package com.aegamesi.java_visualizer.model;
 
-public class Value {
+import java.io.Serializable;
+
+public class Value implements Serializable {
 	// primitive or reference
 	public Type type;
 	public long longValue;
