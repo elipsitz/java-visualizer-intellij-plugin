@@ -1,6 +1,6 @@
 package com.aegamesi.java_visualizer.backend;
 
-import com.aegamesi.java_visualizer.model.ExecutionPoint;
+import com.aegamesi.java_visualizer.model.ExecutionTrace;
 import com.aegamesi.java_visualizer.model.Frame;
 import com.aegamesi.java_visualizer.model.HeapEntity;
 import com.aegamesi.java_visualizer.model.HeapList;
@@ -13,13 +13,11 @@ import com.sun.jdi.ArrayReference;
 import com.sun.jdi.BooleanValue;
 import com.sun.jdi.ByteValue;
 import com.sun.jdi.CharValue;
-import com.sun.jdi.ClassType;
 import com.sun.jdi.DoubleValue;
 import com.sun.jdi.Field;
 import com.sun.jdi.FloatValue;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.IntegerValue;
-import com.sun.jdi.InterfaceType;
 import com.sun.jdi.InvalidStackFrameException;
 import com.sun.jdi.LocalVariable;
 import com.sun.jdi.Location;
@@ -35,14 +33,10 @@ import traceprinter.JDIUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -66,7 +60,7 @@ public class Tracer {
 	private static final List<ReferenceType> STATIC_LISTABLE = new ArrayList<>();
 
 	private ThreadReference thread;
-	private ExecutionPoint model;
+	private ExecutionTrace model;
 
 	/*
 	Converting actual heap objects requires running code on the suspended VM thread.
@@ -79,8 +73,8 @@ public class Tracer {
 		this.thread = thread;
 	}
 
-	public ExecutionPoint getModel() throws IncompatibleThreadStateException {
-		model = new ExecutionPoint();
+	public ExecutionTrace getModel() throws IncompatibleThreadStateException {
+		model = new ExecutionTrace();
 
 		// Convert stack frame locals
 		for (StackFrame frame : thread.frames()) {
