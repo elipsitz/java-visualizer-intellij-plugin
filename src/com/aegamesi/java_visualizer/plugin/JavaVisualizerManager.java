@@ -1,5 +1,7 @@
 package com.aegamesi.java_visualizer.plugin;
 
+import com.aegamesi.java_visualizer.backend.Tracer;
+import com.aegamesi.java_visualizer.model.ExecutionTrace;
 import com.intellij.debugger.DebuggerManager;
 import com.intellij.debugger.engine.DebugProcess;
 import com.intellij.debugger.engine.SuspendContext;
@@ -16,33 +18,20 @@ import com.intellij.xdebugger.XDebugProcess;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebugSessionListener;
 import com.sun.jdi.ThreadReference;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.web.WebEvent;
-import javafx.scene.web.WebView;
-import netscape.javascript.JSObject;
 import org.jetbrains.annotations.NotNull;
-import traceprinter.JDI2JSON;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.swing.JComponent;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import java.util.ArrayList;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 
 public class JavaVisualizerManager implements XDebugSessionListener {
-	private static final String CONTENT_ID = "61B.JavaVisualizerContent2";
+	private static final String CONTENT_ID = "aegamesi.JavaVisualizerContent2";
 
 	private XDebugProcess debugProcess;
 	private XDebugSession debugSession;
 	private Content content;
-	private JComponent component;
-	private WebView webView;
-	private boolean webViewReady;
-	private JDI2JSON jdi2json;
+	private JVPanel panel;
 	private Project project;
 
 	public JavaVisualizerManager(Project project, XDebugProcess process) {
@@ -50,7 +39,6 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 		this.debugProcess = process;
 		this.debugSession = process.getSession();
 		this.content = null;
-		this.jdi2json = new JDI2JSON();
 	}
 
 	public void attach() {
@@ -75,40 +63,25 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 		debugSession.addSessionListener(this);
 	}
 
-	private void initializeComponent() {
-		final JFXPanel jfxPanel = new JFXPanel();
-		Platform.setImplicitExit(false);
-		Platform.runLater(() -> {
-			webView = new WebView();
-			webView.getEngine().setOnStatusChanged((WebEvent<String> e) -> {
-				if (e != null && e.getData() != null && e.getData().equals("Ready")) {
-					webViewReady = true;
-				}
-			});
-			webView.getEngine().load(getClass().getResource("/web/visualizer.html").toExternalForm());
-			jfxPanel.setScene(new Scene(webView));
-		});
 
-		jfxPanel.addAncestorListener(new AncestorListener() {
-			public void ancestorAdded(AncestorEvent event) {
+	private void initializeContent() {
+		panel = new JVPanel();
+
+		panel.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
 				forceRefreshVisualizer();
 			}
 
-			public void ancestorRemoved(AncestorEvent event) {
-			}
-
-			public void ancestorMoved(AncestorEvent event) {
+			@Override
+			public void focusLost(FocusEvent e) {
 			}
 		});
-		component = jfxPanel;
-	}
 
-	private void initializeContent() {
-		initializeComponent();
 		RunnerLayoutUi ui = debugSession.getUI();
 		content = ui.createContent(
 				CONTENT_ID,
-				component,
+				panel,
 				"Java Visualizer",
 				IconLoader.getIcon("/icons/jv.png"),
 				null);
@@ -122,7 +95,7 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 		}
 
 		try {
-			if (component.isShowing()) {
+			if (panel.isShowing()) {
 				traceAndVisualize();
 			}
 		} catch (Exception e) {
@@ -156,19 +129,14 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 			}
 			ThreadReference reference = sc.getThread().getThreadReference();
 
-			ArrayList<JsonObject> objs = jdi2json.convertExecutionPoint(reference);
-			if (objs.size() > 0) {
-				JsonArrayBuilder arr = Json.createArrayBuilder();
-				objs.forEach(arr::add);
-				String lastTrace = arr.build().toString();
+			Tracer t = new Tracer(reference);
+			ExecutionTrace model = t.getModel();
 
-				Platform.runLater(() -> {
-					if (webView != null && webViewReady) {
-						JSObject window = (JSObject) webView.getEngine().executeScript("window");
-						window.call("visualize", lastTrace);
-					}
-				});
-			}
+			/*ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("/tmp/jv.ser"));
+			o.writeObject(model);
+			o.close();*/
+
+			panel.setTrace(model);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
