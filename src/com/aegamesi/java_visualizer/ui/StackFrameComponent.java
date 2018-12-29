@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.Map;
 
 public class StackFrameComponent extends JPanel {
@@ -18,20 +20,37 @@ public class StackFrameComponent extends JPanel {
 	public StackFrameComponent(Frame frame) {
 		this.frame = frame;
 		setBackground(Constants.colorFrameBG);
-		setLayout(new BorderLayout());
+		setLayout(new GridBagLayout());
 		setBorder(JBUI.Borders.empty(8));
 
-		Box b = Box.createVerticalBox();
-		add(b);
 
 		JLabel labelName = new JLabel(frame.name, JLabel.LEFT);
 		labelName.setFont(Constants.fontUIMono);
-		b.add(labelName);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridwidth = 2;
+		c.anchor = GridBagConstraints.LINE_START;
+		add(labelName, c);
 
+		c.gridwidth = 1;
+		c.insets.top = 4;
+		int y = 1;
 		for (Map.Entry<String, Value> local : frame.locals.entrySet()) {
 			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
-			b.add(localLabel);
-			b.add(new ValueComponent(local.getValue()));
+			ValueComponent value = new ValueComponent(local.getValue());
+
+			c.gridx = 0;
+			c.gridy = y;
+			c.anchor = GridBagConstraints.LINE_END;
+			c.weightx = 1.0;
+			c.insets.left = 0;
+			add(localLabel, c);
+			c.gridx = 1;
+			c.gridy = y;
+			c.anchor = GridBagConstraints.LINE_START;
+			c.weightx = 0.0;
+			c.insets.left = 8;
+			add(value, c);
+			y += 1;
 		}
 	}
 }
