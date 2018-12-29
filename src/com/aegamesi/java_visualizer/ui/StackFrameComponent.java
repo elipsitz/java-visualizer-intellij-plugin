@@ -4,12 +4,8 @@ import com.aegamesi.java_visualizer.model.Frame;
 import com.aegamesi.java_visualizer.model.Value;
 import com.intellij.util.ui.JBUI;
 
-import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Map;

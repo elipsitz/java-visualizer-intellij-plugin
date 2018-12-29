@@ -1,6 +1,5 @@
 package com.aegamesi.java_visualizer.ui;
 
-import com.aegamesi.java_visualizer.model.Frame;
 import com.aegamesi.java_visualizer.model.HeapEntity;
 
 import javax.swing.JLabel;

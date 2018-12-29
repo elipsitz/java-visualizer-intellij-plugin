@@ -1,7 +1,6 @@
 package com.aegamesi.java_visualizer.ui;
 
 import com.aegamesi.java_visualizer.model.ExecutionTrace;
-import com.aegamesi.java_visualizer.ui.JVPanel;
 
 import javax.swing.JFrame;
 import java.io.FileInputStream;

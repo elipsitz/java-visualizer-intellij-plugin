@@ -5,7 +5,6 @@ import com.aegamesi.java_visualizer.model.Value;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
-import java.awt.Color;
 
 public class ValueComponent extends JPanel {
 	private Value val;

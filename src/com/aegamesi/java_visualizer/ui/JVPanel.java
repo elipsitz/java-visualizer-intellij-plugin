@@ -3,29 +3,18 @@ package com.aegamesi.java_visualizer.ui;
 import com.aegamesi.java_visualizer.model.ExecutionTrace;
 import com.aegamesi.java_visualizer.model.Frame;
 import com.aegamesi.java_visualizer.model.HeapEntity;
-import com.intellij.ui.JBColor;
 
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
 public class JVPanel extends JPanel {
 	private ExecutionTrace trace = null;
 
-	private FontMetrics metricsMessage;
-	private FontMetrics metricsUI;
-	private FontMetrics metricsUIMono;
-
 	public JVPanel() {
 		setBackground(Constants.colorBackground);
 		// setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
 	}
 
 	public void setTrace(ExecutionTrace t) {
