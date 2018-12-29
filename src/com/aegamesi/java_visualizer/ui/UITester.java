@@ -1,6 +1,7 @@
-package com.aegamesi.java_visualizer.plugin;
+package com.aegamesi.java_visualizer.ui;
 
 import com.aegamesi.java_visualizer.model.ExecutionTrace;
+import com.aegamesi.java_visualizer.ui.JVPanel;
 
 import javax.swing.JFrame;
 import java.io.FileInputStream;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Tester {
+public class UITester {
 	public static void main(String[] args) throws Exception {
 		int a = 123;
 		String b = "hello!";
@@ -18,14 +19,14 @@ public class Tester {
 		// toy above
 
 		JVPanel panel = new JVPanel();
-
-		JFrame f = new JFrame();
-		f.setContentPane(panel);
-		f.setSize(800, 600);
-		f.setVisible(true);
-
 		ExecutionTrace trace = makeTrace();
 		panel.setTrace(trace);
+
+		JFrame f = new JFrame();
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setSize(800, 600);
+		f.getContentPane().add(panel);
+		f.setVisible(true);
 	}
 
 	public static ExecutionTrace makeTrace() throws Exception {

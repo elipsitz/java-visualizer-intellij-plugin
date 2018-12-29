@@ -2,6 +2,7 @@ package com.aegamesi.java_visualizer.plugin;
 
 import com.aegamesi.java_visualizer.backend.Tracer;
 import com.aegamesi.java_visualizer.model.ExecutionTrace;
+import com.aegamesi.java_visualizer.ui.JVPanel;
 import com.intellij.debugger.DebuggerManager;
 import com.intellij.debugger.engine.DebugProcess;
 import com.intellij.debugger.engine.SuspendContext;
@@ -22,8 +23,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 
 public class JavaVisualizerManager implements XDebugSessionListener {
 	private static final String CONTENT_ID = "aegamesi.JavaVisualizerContent2";
