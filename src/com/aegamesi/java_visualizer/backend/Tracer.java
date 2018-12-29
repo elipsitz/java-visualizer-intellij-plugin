@@ -29,7 +29,6 @@ import com.sun.jdi.StackFrame;
 import com.sun.jdi.StringReference;
 import com.sun.jdi.ThreadReference;
 import com.sun.jdi.VoidValue;
-import traceprinter.JDIUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,8 +39,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import static com.aegamesi.java_visualizer.backend.TracerUtils.*;
+import static com.aegamesi.java_visualizer.backend.TracerUtils.displayNameForType;
+import static com.aegamesi.java_visualizer.backend.TracerUtils.doesImplementInterface;
+import static com.aegamesi.java_visualizer.backend.TracerUtils.getIterator;
+import static com.aegamesi.java_visualizer.backend.TracerUtils.invokeSimple;
 
+/**
+ * Some code from traceprinter, written by David Pritchard (daveagp@gmail.com)
+ */
 public class Tracer {
 	private static final String[] INTERNAL_PACKAGES = {
 			"java.",
@@ -271,14 +276,14 @@ public class Tracer {
 			out.type = HeapEntity.Type.MAP;
 			out.label = displayNameForType(obj);
 
-			ObjectReference entrySet = (ObjectReference) JDIUtils.invokeSimple(thread, obj, "entrySet");
-			Iterator<com.sun.jdi.Value> i = JDIUtils.getIterator(thread, entrySet);
+			ObjectReference entrySet = (ObjectReference) invokeSimple(thread, obj, "entrySet");
+			Iterator<com.sun.jdi.Value> i = getIterator(thread, entrySet);
 			while (i.hasNext()) {
 				HeapMap.Pair pair = new HeapMap.Pair();
 
 				ObjectReference entry = (ObjectReference) i.next();
-				pair.key = convertValue(JDIUtils.invokeSimple(thread, entry, "getKey"));
-				pair.val = convertValue(JDIUtils.invokeSimple(thread, entry, "getValue"));
+				pair.key = convertValue(invokeSimple(thread, entry, "getKey"));
+				pair.val = convertValue(invokeSimple(thread, entry, "getValue"));
 			}
 			return out;
 		}
