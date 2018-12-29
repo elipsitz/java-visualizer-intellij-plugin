@@ -2,7 +2,7 @@ package com.aegamesi.java_visualizer.plugin;
 
 import com.aegamesi.java_visualizer.backend.Tracer;
 import com.aegamesi.java_visualizer.model.ExecutionTrace;
-import com.aegamesi.java_visualizer.ui.JVPanel;
+import com.aegamesi.java_visualizer.ui.VisualizationPanel;
 import com.intellij.debugger.DebuggerManager;
 import com.intellij.debugger.engine.DebugProcess;
 import com.intellij.debugger.engine.SuspendContext;
@@ -13,6 +13,7 @@ import com.intellij.execution.ui.RunnerLayoutUi;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Key;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.content.Content;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.xdebugger.XDebugProcess;
@@ -21,6 +22,7 @@ import com.intellij.xdebugger.XDebugSessionListener;
 import com.sun.jdi.ThreadReference;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.JScrollPane;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -30,7 +32,7 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 	private XDebugProcess debugProcess;
 	private XDebugSession debugSession;
 	private Content content;
-	private JVPanel panel;
+	private VisualizationPanel panel;
 	private Project project;
 
 	public JavaVisualizerManager(Project project, XDebugProcess process) {
@@ -64,8 +66,7 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 
 
 	private void initializeContent() {
-		panel = new JVPanel();
-
+		panel = new VisualizationPanel();
 		panel.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -77,10 +78,12 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 			}
 		});
 
+		JScrollPane scrollPane = new JBScrollPane(panel);
+
 		RunnerLayoutUi ui = debugSession.getUI();
 		content = ui.createContent(
 				CONTENT_ID,
-				panel,
+				scrollPane,
 				"Java Visualizer",
 				IconLoader.getIcon("/icons/jv.png"),
 				null);
