@@ -10,10 +10,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Map;
 
-public class StackFrameComponent extends JPanel {
+class StackFrameComponent extends JPanel {
 	private Frame frame;
 
-	public StackFrameComponent(Frame frame) {
+	StackFrameComponent(Frame frame) {
 		this.frame = frame;
 		setBackground(Constants.colorFrameBG);
 		setLayout(new GridBagLayout());

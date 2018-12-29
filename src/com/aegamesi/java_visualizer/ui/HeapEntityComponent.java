@@ -6,10 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Color;
 
-public class HeapEntityComponent extends JPanel {
+class HeapEntityComponent extends JPanel {
 	private HeapEntity entity;
 
-	public HeapEntityComponent(HeapEntity entity) {
+	HeapEntityComponent(HeapEntity entity) {
 		this.entity = entity;
 
 		setBackground(new Color(0xFF, 0xFF, 0xC6));

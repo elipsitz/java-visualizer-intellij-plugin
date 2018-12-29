@@ -3,7 +3,7 @@ package com.aegamesi.java_visualizer.ui;
 import java.awt.Color;
 import java.awt.Font;
 
-public class Constants {
+class Constants {
 	static final Color colorBackground = new Color(0xFF, 0xFF, 0xFF);
 
 	static final Color colorFrameText = new Color(0x0, 0x0, 0x0);

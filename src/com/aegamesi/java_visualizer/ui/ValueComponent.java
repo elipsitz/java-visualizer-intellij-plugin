@@ -6,10 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 
-public class ValueComponent extends JPanel {
+class ValueComponent extends JPanel {
 	private Value val;
 
-	public ValueComponent(Value val) {
+	ValueComponent(Value val) {
 		this.val = val;
 
 		setBackground(Constants.colorFrameBG.brighter());

@@ -8,19 +8,23 @@ import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class JVPanel extends JPanel {
+public class VisualizationPanel extends JPanel {
 	private ExecutionTrace trace = null;
 
-	public JVPanel() {
+	public VisualizationPanel() {
 		setBackground(Constants.colorBackground);
-		// setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-
 	}
 
 	public void setTrace(ExecutionTrace t) {
 		this.trace = t;
 		removeAll();
+		buildUI();
 
+		revalidate();
+		repaint();
+	}
+
+	private void buildUI() {
 		Box boxStackFrames = Box.createVerticalBox();
 		JLabel frameLabel = new JLabel("Frames");
 		frameLabel.setFont(Constants.fontMessage);
@@ -39,8 +43,5 @@ public class JVPanel extends JPanel {
 			boxHeap.add(Box.createVerticalStrut(8));
 		}
 		add(boxHeap);
-
-		revalidate();
-		repaint();
 	}
 }
