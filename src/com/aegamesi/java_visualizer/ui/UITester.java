@@ -9,13 +9,20 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UITester {
 	public static void main(String[] args) throws Exception {
 		int a = 123;
 		String b = "hello!";
 		List<String> c = new ArrayList<>(Arrays.asList("a", "b", "c"));
+		Map<String, String> map = new HashMap<>();
+		map.put("abc", "def");
+		map.put("123", "456");
+		map.put("loooong key", "sval");
+		map.put("skey", "loooooooong val");
 
 		// toy above
 
