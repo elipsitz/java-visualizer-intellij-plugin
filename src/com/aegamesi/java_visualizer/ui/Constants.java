@@ -18,4 +18,7 @@ class Constants {
 	static final Font fontUI = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 	static final Font fontUIMono = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 	static final Font fontUISmall = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
+
+	static final int centerMargin = 64;
+	static final int outerPadding = 8;
 }
