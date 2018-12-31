@@ -9,8 +9,9 @@ import java.awt.BorderLayout;
 class ValueComponent extends JPanel {
 	private Value val;
 
-	ValueComponent(Value val) {
+	ValueComponent(VisualizationPanel viz, Value val) {
 		this.val = val;
+		viz.registerValueComponent(this);
 
 		setBackground(Constants.colorFrameBG.brighter());
 		setLayout(new BorderLayout());
@@ -22,5 +23,9 @@ class ValueComponent extends JPanel {
 			label.setFont(Constants.fontUI);
 		}
 		add(label);
+	}
+
+	Value getValue() {
+		return val;
 	}
 }

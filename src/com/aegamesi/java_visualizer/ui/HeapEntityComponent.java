@@ -12,9 +12,11 @@ import java.awt.GridBagLayout;
 import java.util.Map;
 
 class HeapEntityComponent extends JPanel {
+	private VisualizationPanel viz;
 	private HeapEntity entity;
 
-	HeapEntityComponent(HeapEntity entity) {
+	HeapEntityComponent(VisualizationPanel viz, HeapEntity entity) {
+		this.viz = viz;
 		this.entity = entity;
 
 		setOpaque(false);
@@ -46,7 +48,7 @@ class HeapEntityComponent extends JPanel {
 		int y = 1;
 		for (Map.Entry<String, Value> local : e.fields.entrySet()) {
 			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
-			ValueComponent value = new ValueComponent(local.getValue());
+			ValueComponent value = new ValueComponent(viz, local.getValue());
 
 			c.gridx = 0;
 			c.gridy = y;

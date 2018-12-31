@@ -12,9 +12,11 @@ import java.util.Map;
 
 class StackFrameComponent extends JPanel {
 	private Frame frame;
+	private VisualizationPanel viz;
 
-	StackFrameComponent(Frame frame, boolean first) {
+	StackFrameComponent(VisualizationPanel viz, Frame frame, boolean first) {
 		this.frame = frame;
+		this.viz = viz;
 		setBackground(first ? Constants.colorFrameBGFirst : Constants.colorFrameBG);
 		setLayout(new GridBagLayout());
 		setBorder(JBUI.Borders.empty(8));
@@ -32,7 +34,7 @@ class StackFrameComponent extends JPanel {
 		int y = 1;
 		for (Map.Entry<String, Value> local : frame.locals.entrySet()) {
 			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
-			ValueComponent value = new ValueComponent(local.getValue());
+			ValueComponent value = new ValueComponent(viz, local.getValue());
 
 			c.gridx = 0;
 			c.gridy = y;

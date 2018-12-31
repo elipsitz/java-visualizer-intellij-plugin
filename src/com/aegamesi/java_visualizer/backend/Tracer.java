@@ -110,7 +110,9 @@ public class Tracer {
 			if (heapDone.contains(id))
 				continue;
 			heapDone.add(id);
-			model.heap.put(id, convertObject(obj));
+			HeapEntity converted = convertObject(obj);
+			converted.id = id;
+			model.heap.put(id, converted);
 		}
 
 		return model;
