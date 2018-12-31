@@ -7,7 +7,8 @@ class Constants {
 	static final Color colorBackground = new Color(0xFF, 0xFF, 0xFF);
 
 	static final Color colorFrameText = new Color(0x0, 0x0, 0x0);
-	static final Color colorFrameBG = new Color(0xE2, 0xEB, 0xF6);
+	static final Color colorFrameBG = new Color(0xF7, 0xF7, 0xF7);
+	static final Color colorFrameBGFirst = new Color(0xE2, 0xEB, 0xF6);
 	static final Color colorFrameOutline = new Color(0xAA, 0xAA, 0xAA);
 
 	static final Color colorHeapKey = new Color(0xFF, 0xFF, 0xC6);

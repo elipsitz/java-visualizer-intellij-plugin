@@ -13,9 +13,9 @@ import java.util.Map;
 class StackFrameComponent extends JPanel {
 	private Frame frame;
 
-	StackFrameComponent(Frame frame) {
+	StackFrameComponent(Frame frame, boolean first) {
 		this.frame = frame;
-		setBackground(Constants.colorFrameBG);
+		setBackground(first ? Constants.colorFrameBGFirst : Constants.colorFrameBG);
 		setLayout(new GridBagLayout());
 		setBorder(JBUI.Borders.empty(8));
 

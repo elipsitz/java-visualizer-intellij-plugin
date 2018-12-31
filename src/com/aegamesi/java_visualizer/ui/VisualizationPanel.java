@@ -1,7 +1,6 @@
 package com.aegamesi.java_visualizer.ui;
 
 import com.aegamesi.java_visualizer.model.ExecutionTrace;
-import com.aegamesi.java_visualizer.model.Frame;
 import com.aegamesi.java_visualizer.model.HeapEntity;
 
 import javax.swing.Box;
@@ -33,8 +32,8 @@ public class VisualizationPanel extends JPanel {
 		frameLabel.setHorizontalAlignment(JLabel.RIGHT);
 		frames.add(frameLabel);
 		frames.add(Box.createVerticalStrut(24));
-		for (Frame f : trace.frames) {
-			frames.add(new StackFrameComponent(f));
+		for (int i = 0; i < trace.frames.size(); i++) {
+			frames.add(new StackFrameComponent(trace.frames.get(i), i == 0));
 			frames.add(Box.createVerticalStrut(8));
 		}
 		add(frames);
