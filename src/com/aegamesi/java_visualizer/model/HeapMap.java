@@ -10,4 +10,14 @@ public class HeapMap extends HeapEntity{
 		public Value key;
 		public Value val;
 	}
+
+	@Override
+	public List<Value> getContainedValues() {
+		List<Value> l = new ArrayList<>();
+		for (Pair p : pairs) {
+			l.add(p.key);
+			l.add(p.val);
+		}
+		return l;
+	}
 }

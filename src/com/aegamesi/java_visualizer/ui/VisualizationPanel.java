@@ -1,6 +1,7 @@
 package com.aegamesi.java_visualizer.ui;
 
 import com.aegamesi.java_visualizer.model.ExecutionTrace;
+import com.aegamesi.java_visualizer.model.Frame;
 import com.aegamesi.java_visualizer.model.HeapEntity;
 import com.aegamesi.java_visualizer.model.Value;
 import com.intellij.util.containers.hash.HashMap;
@@ -18,14 +19,19 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class VisualizationPanel extends JPanel {
 	private ExecutionTrace trace = null;
 
 	private List<ValueComponent> referenceComponents;
-	private Map<Long, HeapEntityComponent> heapEntityComponents;
+	private Map<Long, HeapEntityComponent> heapComponents;
+	private Set<Long> heapObjsDone = new HashSet<>();
+	private LinkedList<Long> heapObjsToLayout = new LinkedList<>();
 
 	private List<Shape> pointerShapes;
 
@@ -33,14 +39,15 @@ public class VisualizationPanel extends JPanel {
 		setBackground(Constants.colorBackground);
 		setLayout(null);
 		referenceComponents = new ArrayList<>();
-		heapEntityComponents = new HashMap<>();
+		heapComponents = new HashMap<>();
 		pointerShapes = new ArrayList<>();
 	}
 
 	public void setTrace(ExecutionTrace t) {
 		this.trace = t;
 		referenceComponents.clear();
-		heapEntityComponents.clear();
+		heapComponents.clear();
+		heapObjsDone.clear();
 		removeAll();
 
 		buildUI();
@@ -49,7 +56,19 @@ public class VisualizationPanel extends JPanel {
 		repaint();
 	}
 
+	private void addValuesToLayout(List<Value> vals) {
+		for (int i = vals.size() - 1; i >= 0; i -= 1) {
+			Value v = vals.get(i);
+			if (v.type == Value.Type.REFERENCE) {
+				if (!heapObjsDone.contains(v.reference)) {
+					heapObjsToLayout.addFirst(v.reference);
+				}
+			}
+		}
+	}
+
 	private void buildUI() {
+		// Create and place the stack components
 		Box frames = Box.createVerticalBox();
 		JLabel frameLabel = new JLabel("Frames");
 		frameLabel.setFont(Constants.fontMessage);
@@ -57,17 +76,32 @@ public class VisualizationPanel extends JPanel {
 		frames.add(frameLabel);
 		frames.add(Box.createVerticalStrut(24));
 		for (int i = trace.frames.size() - 1; i >= 0; i -= 1) {
-			frames.add(new StackFrameComponent(this, trace.frames.get(i), i == 0));
+			Frame f = trace.frames.get(i);
+			frames.add(new StackFrameComponent(this, f, i == 0));
 			frames.add(Box.createVerticalStrut(8));
+
+			addValuesToLayout(new ArrayList<>(f.locals.values()));
 		}
 		add(frames);
 
-		Box heap = Box.createVerticalBox();
+		// Create the heap components (but don't place them yet)
 		for (Map.Entry<Long, HeapEntity> pair : trace.heap.entrySet()) {
 			HeapEntityComponent obj = new HeapEntityComponent(this, pair.getValue());
-			heapEntityComponents.put(pair.getKey(), obj);
-			heap.add(obj);
+			heapComponents.put(pair.getKey(), obj);
+		}
+
+		Box heap = Box.createVerticalBox();
+		while (!heapObjsToLayout.isEmpty()) {
+			long id = heapObjsToLayout.removeFirst();
+			if (heapObjsDone.contains(id)) {
+				continue;
+			}
+			heapObjsDone.add(id);
+
+			HeapEntityComponent component = heapComponents.get(id);
+			heap.add(component);
 			heap.add(Box.createVerticalStrut(8));
+			addValuesToLayout(component.getEntity().getContainedValues());
 		}
 		add(heap);
 
@@ -98,7 +132,7 @@ public class VisualizationPanel extends JPanel {
 		for (ValueComponent ref : referenceComponents) {
 			Rectangle refBounds = getTrueComponentBounds(ref);
 			long refId = ref.getValue().reference;
-			Rectangle objBounds = getTrueComponentBounds(heapEntityComponents.get(refId));
+			Rectangle objBounds = getTrueComponentBounds(heapComponents.get(refId));
 
 			Shape p = constructPath(
 					refBounds.x + refBounds.width,
