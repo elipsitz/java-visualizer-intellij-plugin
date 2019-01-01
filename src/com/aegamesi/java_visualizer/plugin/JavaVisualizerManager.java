@@ -13,6 +13,7 @@ import com.intellij.execution.ui.RunnerLayoutUi;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Key;
+import com.intellij.ui.AncestorListenerAdapter;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.content.Content;
 import com.intellij.util.ui.UIUtil;
@@ -23,8 +24,7 @@ import com.sun.jdi.ThreadReference;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JScrollPane;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import javax.swing.event.AncestorEvent;
 
 public class JavaVisualizerManager implements XDebugSessionListener {
 	private static final String CONTENT_ID = "aegamesi.JavaVisualizerContent2";
@@ -67,14 +67,9 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 
 	private void initializeContent() {
 		panel = new VisualizationPanel();
-		panel.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent e) {
+		panel.addAncestorListener(new AncestorListenerAdapter() {
+			public void ancestorAdded(AncestorEvent event) {
 				forceRefreshVisualizer();
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
 			}
 		});
 
