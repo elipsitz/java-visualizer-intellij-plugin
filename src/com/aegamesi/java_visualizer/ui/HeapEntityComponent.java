@@ -45,6 +45,7 @@ class HeapEntityComponent extends JPanel {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridwidth = 1;
 		c.insets.top = 4;
+		c.fill = GridBagConstraints.BOTH;
 		int y = 1;
 		for (Map.Entry<String, Value> local : e.fields.entrySet()) {
 			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
@@ -52,13 +53,11 @@ class HeapEntityComponent extends JPanel {
 
 			c.gridx = 0;
 			c.gridy = y;
-			c.anchor = GridBagConstraints.LINE_END;
 			c.weightx = 1.0;
 			c.insets.left = 0;
 			panel.add(localLabel, c);
 			c.gridx = 1;
 			c.gridy = y;
-			c.anchor = GridBagConstraints.LINE_START;
 			c.weightx = 0.0;
 			c.insets.left = 8;
 			panel.add(value, c);
