@@ -143,9 +143,8 @@ public class VisualizationPanel extends JPanel {
 	}
 
 	@Override
-	public void validate() {
-		super.validate();
-
+	protected void validateTree() {
+		super.validateTree();
 		computePointerPaths();
 	}
 
