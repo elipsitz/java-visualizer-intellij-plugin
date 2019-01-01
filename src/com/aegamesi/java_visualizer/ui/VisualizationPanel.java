@@ -8,13 +8,15 @@ import com.intellij.util.containers.hash.HashMap;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +27,14 @@ public class VisualizationPanel extends JPanel {
 	private List<ValueComponent> referenceComponents;
 	private Map<Long, HeapEntityComponent> heapEntityComponents;
 
+	private List<Shape> pointerShapes;
+
 	public VisualizationPanel() {
 		setBackground(Constants.colorBackground);
 		setLayout(null);
 		referenceComponents = new ArrayList<>();
 		heapEntityComponents = new HashMap<>();
+		pointerShapes = new ArrayList<>();
 	}
 
 	public void setTrace(ExecutionTrace t) {
@@ -87,29 +92,61 @@ public class VisualizationPanel extends JPanel {
 		));
 	}
 
-	void registerValueComponent(ValueComponent component) {
-		if (component.getValue().type == Value.Type.REFERENCE) {
-			referenceComponents.add(component);
-		}
-	}
+	private void computePointerPaths() {
+		pointerShapes.clear();
 
-	@Override
-	protected void paintChildren(Graphics g) {
-		super.paintChildren(g);
-
-		paintArrows((Graphics2D) g);
-	}
-
-	private void paintArrows(Graphics2D g) {
 		for (ValueComponent ref : referenceComponents) {
-			g.setColor(Color.black);
-
 			Rectangle refBounds = getTrueComponentBounds(ref);
 			long refId = ref.getValue().reference;
 			Rectangle objBounds = getTrueComponentBounds(heapEntityComponents.get(refId));
 
-			g.drawLine(refBounds.x, refBounds.y, objBounds.x, objBounds.y + (objBounds.height / 2));
+			Shape p = constructPath(
+					refBounds.x + refBounds.width,
+					refBounds.y + (refBounds.height / 2.0),
+					objBounds.x,
+					objBounds.y + (objBounds.height / 2.0)
+			);
+			pointerShapes.add(p);
 		}
+	}
+
+	private Shape constructPath(double x0, double y0, double x1, double y1) {
+		double dist = Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
+
+		if (dist < 50.0) {
+			return new Line2D.Double(x0, y0, x1, y1);
+		} else {
+			/*
+			// Line style: cubic bezier
+			double delta = 30.0;
+			return new CubicCurve2D.Double(
+					x0, y0,
+					x0 + delta, y0,
+					x1 - delta, y1,
+					x1, y1
+			);*/
+			// Line style: "state machine"
+			return new PointerShape(x0, y0, x1, y1);
+		}
+	}
+
+	@Override
+	protected void paintChildren(Graphics _g) {
+		super.paintChildren(_g);
+		Graphics2D g = (Graphics2D) _g;
+
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setColor(Constants.colorPointer);
+		for (Shape path : pointerShapes) {
+			g.draw(path);
+		}
+	}
+
+	@Override
+	public void validate() {
+		super.validate();
+
+		computePointerPaths();
 	}
 
 	/**
@@ -124,5 +161,11 @@ public class VisualizationPanel extends JPanel {
 			c = c.getParent();
 		}
 		return r;
+	}
+
+	void registerValueComponent(ValueComponent component) {
+		if (component.getValue().type == Value.Type.REFERENCE) {
+			referenceComponents.add(component);
+		}
 	}
 }

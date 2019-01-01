@@ -15,6 +15,9 @@ class Constants {
 	static final Color colorHeapVal = new Color(0xFA, 0xEB, 0xBF);
 	static final Color colorHeapLabel = new Color(0x55, 0x55, 0x55);
 
+	static final Color colorPointer = new Color(0x00, 0x55, 0x83);
+	static final Color colorPointerInactive = new Color(0xCC, 0xCC, 0xCC);
+
 	static final Font fontMessage = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 	static final Font fontUI = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 	static final Font fontUIMono = new Font(Font.MONOSPACED, Font.PLAIN, 12);
