@@ -2,9 +2,7 @@ package com.aegamesi.java_visualizer.ui;
 
 import com.aegamesi.java_visualizer.model.ExecutionTrace;
 import com.aegamesi.java_visualizer.model.Frame;
-import com.aegamesi.java_visualizer.model.HeapEntity;
 import com.aegamesi.java_visualizer.model.Value;
-import com.intellij.util.containers.hash.HashMap;
 
 import javax.swing.Box;
 import javax.swing.JLabel;
@@ -19,52 +17,31 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class VisualizationPanel extends JPanel {
 	private ExecutionTrace trace = null;
 
 	private List<ValueComponent> referenceComponents;
-	private Map<Long, HeapEntityComponent> heapComponents;
-	private Set<Long> heapObjsDone = new HashSet<>();
-	private LinkedList<Long> heapObjsToLayout = new LinkedList<>();
-
 	private List<Shape> pointerShapes;
+	private HeapPanel heapPanel;
 
 	public VisualizationPanel() {
 		setBackground(Constants.colorBackground);
 		setLayout(null);
 		referenceComponents = new ArrayList<>();
-		heapComponents = new HashMap<>();
 		pointerShapes = new ArrayList<>();
 	}
 
 	public void setTrace(ExecutionTrace t) {
 		this.trace = t;
 		referenceComponents.clear();
-		heapComponents.clear();
-		heapObjsDone.clear();
 		removeAll();
 
 		buildUI();
 
 		revalidate();
 		repaint();
-	}
-
-	private void addValuesToLayout(List<Value> vals) {
-		for (int i = vals.size() - 1; i >= 0; i -= 1) {
-			Value v = vals.get(i);
-			if (v.type == Value.Type.REFERENCE) {
-				if (!heapObjsDone.contains(v.reference)) {
-					heapObjsToLayout.addFirst(v.reference);
-				}
-			}
-		}
 	}
 
 	private void buildUI() {
@@ -79,41 +56,21 @@ public class VisualizationPanel extends JPanel {
 			Frame f = trace.frames.get(i);
 			frames.add(new StackFrameComponent(this, f, i == 0));
 			frames.add(Box.createVerticalStrut(8));
-
-			addValuesToLayout(new ArrayList<>(f.locals.values()));
 		}
 		add(frames);
 
-		// Create the heap components (but don't place them yet)
-		for (Map.Entry<Long, HeapEntity> pair : trace.heap.entrySet()) {
-			HeapEntityComponent obj = new HeapEntityComponent(this, pair.getValue());
-			heapComponents.put(pair.getKey(), obj);
-		}
-
-		Box heap = Box.createVerticalBox();
-		while (!heapObjsToLayout.isEmpty()) {
-			long id = heapObjsToLayout.removeFirst();
-			if (heapObjsDone.contains(id)) {
-				continue;
-			}
-			heapObjsDone.add(id);
-
-			HeapEntityComponent component = heapComponents.get(id);
-			heap.add(component);
-			heap.add(Box.createVerticalStrut(8));
-			addValuesToLayout(component.getEntity().getContainedValues());
-		}
-		add(heap);
+		heapPanel = new HeapPanel(this, trace.heap);
+		add(heapPanel);
 
 		Dimension sizeFrames = frames.getPreferredSize();
-		Dimension sizeHeap = heap.getPreferredSize();
+		Dimension sizeHeap = heapPanel.getPreferredSize();
 		frames.setBounds(
 				Constants.outerPadding,
 				Constants.outerPadding,
 				sizeFrames.width,
 				sizeFrames.height
 		);
-		heap.setBounds(
+		heapPanel.setBounds(
 				Constants.outerPadding + sizeFrames.width + Constants.centerMargin,
 				Constants.outerPadding,
 				sizeHeap.width,
@@ -132,7 +89,8 @@ public class VisualizationPanel extends JPanel {
 		for (ValueComponent ref : referenceComponents) {
 			Rectangle refBounds = getTrueComponentBounds(ref);
 			long refId = ref.getValue().reference;
-			Rectangle objBounds = getTrueComponentBounds(heapComponents.get(refId));
+			HeapEntityComponent obj = heapPanel.getHeapComponents().get(refId);
+			Rectangle objBounds = getTrueComponentBounds(obj);
 
 			Shape p = constructPath(
 					refBounds.x + refBounds.width,
@@ -180,6 +138,10 @@ public class VisualizationPanel extends JPanel {
 	protected void validateTree() {
 		super.validateTree();
 		computePointerPaths();
+	}
+
+	List<ValueComponent> getReferenceComponents() {
+		return referenceComponents;
 	}
 
 	/**

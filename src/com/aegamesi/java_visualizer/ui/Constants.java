@@ -26,4 +26,8 @@ class Constants {
 
 	static final int centerMargin = 64;
 	static final int outerPadding = 8;
+
+	static final int paddingHeapVertical = 8;
+	static final int paddingHeapHorizontal = 16;
+	static final int paddingHeapContinuation = 16;
 }

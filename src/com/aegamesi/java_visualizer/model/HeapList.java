@@ -7,7 +7,10 @@ public class HeapList extends HeapEntity {
 	public List<Value> items = new ArrayList<>();
 
 	@Override
-	public List<Value> getContainedValues() {
-		return items;
+	public boolean hasSameStructure(HeapEntity other) {
+		if (other instanceof HeapList) {
+			return items.size() == ((HeapList) other).items.size();
+		}
+		return false;
 	}
 }

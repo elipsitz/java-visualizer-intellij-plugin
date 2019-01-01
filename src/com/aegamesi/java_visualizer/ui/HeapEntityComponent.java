@@ -17,6 +17,7 @@ import java.util.Map;
 class HeapEntityComponent extends JPanel {
 	private VisualizationPanel viz;
 	private HeapEntity entity;
+	private List<ValueComponent> valueComponents = new ArrayList<>();
 
 	HeapEntityComponent(VisualizationPanel viz, HeapEntity entity) {
 		this.viz = viz;
@@ -43,8 +44,12 @@ class HeapEntityComponent extends JPanel {
 		}
 	}
 
-	public HeapEntity getEntity() {
+	HeapEntity getEntity() {
 		return entity;
+	}
+
+	List<ValueComponent> getValueComponents() {
+		return valueComponents;
 	}
 
 	private class PanelObject extends JPanel {
@@ -62,6 +67,7 @@ class HeapEntityComponent extends JPanel {
 			for (Map.Entry<String, Value> local : e.fields.entrySet()) {
 				JLabel key = new JLabel(local.getKey(), JLabel.RIGHT);
 				ValueComponent val = new ValueComponent(viz, local.getValue());
+				valueComponents.add(val);
 				keyWidth = Math.max(keyWidth, key.getPreferredSize().width);
 				valueWidth = Math.max(valueWidth, val.getPreferredSize().width);
 				keys.add(key);
@@ -116,6 +122,7 @@ class HeapEntityComponent extends JPanel {
 			for (int i = 0; i < e.items.size(); i++) {
 				splits[i] = x;
 				ValueComponent value = new ValueComponent(viz, e.items.get(i));
+				valueComponents.add(value);
 				Dimension size = value.getPreferredSize();
 				JLabel indexLabel = new JLabel(Integer.toString(i));
 				indexLabel.setFont(Constants.fontUISmall);

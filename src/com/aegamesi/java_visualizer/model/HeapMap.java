@@ -12,12 +12,10 @@ public class HeapMap extends HeapEntity{
 	}
 
 	@Override
-	public List<Value> getContainedValues() {
-		List<Value> l = new ArrayList<>();
-		for (Pair p : pairs) {
-			l.add(p.key);
-			l.add(p.val);
+	public boolean hasSameStructure(HeapEntity other) {
+		if (other instanceof HeapMap) {
+			return pairs.size() == ((HeapMap) other).pairs.size();
 		}
-		return l;
+		return false;
 	}
 }
