@@ -45,6 +45,9 @@ class Constants {
 			r.translate(loc.x, loc.y);
 			c = c.getParent();
 		}
+		if (c == null) {
+			return null;
+		}
 		return r;
 	}
 }

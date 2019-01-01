@@ -4,7 +4,6 @@ import com.aegamesi.java_visualizer.model.HeapEntity;
 import com.aegamesi.java_visualizer.model.Value;
 
 import javax.swing.JPanel;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.HashMap;
@@ -27,8 +26,8 @@ class HeapPanel extends JPanel {
 		this.viz = viz;
 		this.heap = heap;
 
+		setOpaque(false);
 		setLayout(null);
-		setBackground(Color.pink); // debug
 
 		createComponents();
 		computeLayout();
@@ -73,8 +72,10 @@ class HeapPanel extends JPanel {
 				x = 0;
 				rowHeight = 0;
 			}
-			int originX = Constants.getRelativeBounds(this, vc).x;
-			x = Math.max(x, originX + Constants.paddingHeapContinuation);
+			Rectangle originBounds = Constants.getRelativeBounds(this, vc);
+			if (originBounds != null) {
+				x = Math.max(x, originBounds.x + Constants.paddingHeapContinuation);
+			}
 			component.setBounds(x, y, size.width, size.height);
 
 			x += size.width + Constants.paddingHeapHorizontal;
