@@ -73,6 +73,8 @@ class HeapPanel extends JPanel {
 				x = 0;
 				rowHeight = 0;
 			}
+			int originX = Constants.getRelativeBounds(this, vc).x;
+			x = Math.max(x, originX + Constants.paddingHeapContinuation);
 			component.setBounds(x, y, size.width, size.height);
 
 			x += size.width + Constants.paddingHeapHorizontal;

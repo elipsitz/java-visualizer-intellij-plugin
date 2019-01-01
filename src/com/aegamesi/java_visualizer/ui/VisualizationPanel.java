@@ -7,11 +7,9 @@ import com.aegamesi.java_visualizer.model.Value;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -87,10 +85,10 @@ public class VisualizationPanel extends JPanel {
 		pointerShapes.clear();
 
 		for (ValueComponent ref : referenceComponents) {
-			Rectangle refBounds = getTrueComponentBounds(ref);
+			Rectangle refBounds = Constants.getRelativeBounds(this, ref);
 			long refId = ref.getValue().reference;
 			HeapEntityComponent obj = heapPanel.getHeapComponents().get(refId);
-			Rectangle objBounds = getTrueComponentBounds(obj);
+			Rectangle objBounds = Constants.getRelativeBounds(this, obj);
 
 			Shape p = constructPath(
 					refBounds.x + refBounds.width,
@@ -142,20 +140,6 @@ public class VisualizationPanel extends JPanel {
 
 	List<ValueComponent> getReferenceComponents() {
 		return referenceComponents;
-	}
-
-	/**
-	 * Returns the Bounds of the component, relative to this panel.
-	 */
-	private Rectangle getTrueComponentBounds(Component c) {
-		Rectangle r = c.getBounds();
-		c = c.getParent();
-		while (c != null && c != this) {
-			Point loc = c.getLocation();
-			r.translate(loc.x, loc.y);
-			c = c.getParent();
-		}
-		return r;
 	}
 
 	void registerValueComponent(ValueComponent component) {

@@ -1,7 +1,10 @@
 package com.aegamesi.java_visualizer.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.Rectangle;
 
 class Constants {
 	static final Color colorBackground = new Color(0xFF, 0xFF, 0xFF);
@@ -29,5 +32,19 @@ class Constants {
 
 	static final int paddingHeapVertical = 8;
 	static final int paddingHeapHorizontal = 16;
-	static final int paddingHeapContinuation = 16;
+	static final int paddingHeapContinuation = 32;
+
+	/**
+	 * Returns the Bounds of the component, relative to this panel.
+	 */
+	static Rectangle getRelativeBounds(Component parent, Component c) {
+		Rectangle r = c.getBounds();
+		c = c.getParent();
+		while (c != null && c != parent) {
+			Point loc = c.getLocation();
+			r.translate(loc.x, loc.y);
+			c = c.getParent();
+		}
+		return r;
+	}
 }
