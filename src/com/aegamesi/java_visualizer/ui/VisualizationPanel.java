@@ -56,7 +56,7 @@ public class VisualizationPanel extends JPanel {
 		frameLabel.setHorizontalAlignment(JLabel.RIGHT);
 		frames.add(frameLabel);
 		frames.add(Box.createVerticalStrut(24));
-		for (int i = 0; i < trace.frames.size(); i++) {
+		for (int i = trace.frames.size() - 1; i >= 0; i -= 1) {
 			frames.add(new StackFrameComponent(this, trace.frames.get(i), i == 0));
 			frames.add(Box.createVerticalStrut(8));
 		}

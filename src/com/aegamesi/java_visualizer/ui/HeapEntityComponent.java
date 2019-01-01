@@ -43,6 +43,10 @@ class HeapEntityComponent extends JPanel {
 		}
 	}
 
+	public HeapEntity getEntity() {
+		return entity;
+	}
+
 	private class PanelObject extends JPanel {
 		private int hsplit;
 		private int[] vsplits;
