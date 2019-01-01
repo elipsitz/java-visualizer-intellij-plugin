@@ -109,18 +109,23 @@ class HeapEntityComponent extends JPanel {
 
 			int height = 0;
 			int x = 0;
-			int y = 8;
 			for (int i = 0; i < e.items.size(); i++) {
 				splits[i] = x;
 				ValueComponent value = new ValueComponent(viz, e.items.get(i));
 				Dimension size = value.getPreferredSize();
+				JLabel indexLabel = new JLabel(Integer.toString(i));
+				indexLabel.setFont(Constants.fontUISmall);
+				indexLabel.setForeground(Constants.colorHeapLabel);
+				Dimension indexSize = indexLabel.getPreferredSize();
+				indexLabel.setBounds(x + 4, 4, indexSize.width, indexSize.height);
+				add(indexLabel);
 				x += 8;
-				value.setBounds(x, y, size.width, size.height);
+				value.setBounds(x, 4 + indexSize.height + 4, size.width, size.height);
 				x += size.width + 8;
 				add(value);
-				height = Math.max(height, size.height);
+				height = Math.max(height, indexSize.height + size.height);
 			}
-			height += 16;
+			height += 8 + 8;
 			setPreferredSize(new Dimension(x, height));
 		}
 
