@@ -11,8 +11,8 @@ class Constants {
 	static final Color colorFrameBGFirst = new Color(0xE2, 0xEB, 0xF6);
 	static final Color colorFrameOutline = new Color(0xAA, 0xAA, 0xAA);
 
-	static final Color colorHeapKey = new Color(0xFF, 0xFF, 0xC6);
-	static final Color colorHeapVal = new Color(0xFA, 0xEB, 0xBF);
+	static final Color colorHeapKey = new Color(0xFA, 0xEB, 0xBF);
+	static final Color colorHeapVal = new Color(0xFF, 0xFF, 0xC6);
 	static final Color colorHeapLabel = new Color(0x55, 0x55, 0x55);
 
 	static final Color colorPointer = new Color(0x00, 0x55, 0x83);

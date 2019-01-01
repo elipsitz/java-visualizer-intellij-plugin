@@ -1,9 +1,13 @@
 package com.aegamesi.java_visualizer.ui;
 
 import com.aegamesi.java_visualizer.model.HeapEntity;
+import com.aegamesi.java_visualizer.model.HeapList;
 import com.aegamesi.java_visualizer.model.HeapObject;
 import com.aegamesi.java_visualizer.model.Value;
+import com.intellij.util.ui.JBUI;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -31,6 +35,8 @@ class HeapEntityComponent extends JPanel {
 		JPanel mainPanel = null;
 		if (entity instanceof HeapObject) {
 			mainPanel = makePanelForObject((HeapObject) entity);
+		} else if (entity instanceof HeapList) {
+			mainPanel = makePanelForList((HeapList) entity);
 		}
 
 		if (mainPanel != null) {
@@ -62,6 +68,22 @@ class HeapEntityComponent extends JPanel {
 			c.insets.left = 8;
 			panel.add(value, c);
 			y += 1;
+		}
+		return panel;
+	}
+
+	private JPanel makePanelForList(HeapList e) {
+		JPanel panel = new JPanel();
+		panel.setBackground(Constants.colorHeapVal);
+		panel.setBorder(JBUI.Borders.empty(8));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+
+		for (int i = 0; i < e.items.size(); i++) {
+			if (i > 0) {
+				panel.add(Box.createHorizontalStrut(8));
+			}
+			ValueComponent value = new ValueComponent(viz, e.items.get(i));
+			panel.add(value);
 		}
 		return panel;
 	}
