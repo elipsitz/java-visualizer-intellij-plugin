@@ -10,9 +10,8 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 class HeapEntityComponent extends JPanel {
@@ -34,7 +33,7 @@ class HeapEntityComponent extends JPanel {
 
 		JPanel mainPanel = null;
 		if (entity instanceof HeapObject) {
-			mainPanel = makePanelForObject((HeapObject) entity);
+			mainPanel = new PanelObject((HeapObject) entity);
 		} else if (entity instanceof HeapList) {
 			mainPanel = new PanelList((HeapList) entity);
 		}
@@ -44,38 +43,66 @@ class HeapEntityComponent extends JPanel {
 		}
 	}
 
-	private JPanel makePanelForObject(HeapObject e) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridBagLayout());
+	private class PanelObject extends JPanel {
+		private int hsplit;
+		private int[] vsplits;
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridwidth = 1;
-		c.insets.top = 4;
-		c.fill = GridBagConstraints.BOTH;
-		int y = 1;
-		for (Map.Entry<String, Value> local : e.fields.entrySet()) {
-			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
-			ValueComponent value = new ValueComponent(viz, local.getValue());
+		PanelObject(HeapObject e) {
+			setLayout(null);
 
-			c.gridx = 0;
-			c.gridy = y;
-			c.weightx = 1.0;
-			c.insets.left = 0;
-			panel.add(localLabel, c);
-			c.gridx = 1;
-			c.gridy = y;
-			c.weightx = 0.0;
-			c.insets.left = 8;
-			panel.add(value, c);
-			y += 1;
+			int keyWidth = 0;
+			int valueWidth = 0;
+
+			List<JLabel> keys = new ArrayList<>();
+			List<ValueComponent> vals = new ArrayList<>();
+			for (Map.Entry<String, Value> local : e.fields.entrySet()) {
+				JLabel key = new JLabel(local.getKey(), JLabel.RIGHT);
+				ValueComponent val = new ValueComponent(viz, local.getValue());
+				keyWidth = Math.max(keyWidth, key.getPreferredSize().width);
+				valueWidth = Math.max(valueWidth, val.getPreferredSize().width);
+				keys.add(key);
+				vals.add(val);
+				add(key);
+				add(val);
+			}
+
+			int y = 0;
+			vsplits = new int[e.fields.size()];
+			for (int i = 0; i < e.fields.size(); i += 1) {
+				JLabel key = keys.get(i);
+				ValueComponent val = vals.get(i);
+				int h = Math.max(key.getPreferredSize().height, val.getPreferredSize().height);
+
+				y += 4;
+				key.setBounds(4, y, keyWidth, h);
+				val.setBounds(4 + keyWidth + 4 + 4, y, valueWidth, h);
+				y += h + 4;
+				vsplits[i] = y;
+			}
+
+			setPreferredSize(new Dimension(16 + keyWidth + valueWidth, y));
+			hsplit = 4 + keyWidth + 4;
 		}
-		return panel;
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			g.setColor(Constants.colorHeapKey);
+			g.fillRect(0, 0, hsplit, getHeight());
+			g.setColor(Constants.colorHeapVal);
+			g.fillRect(hsplit, 0, getWidth() - hsplit, getHeight());
+
+			g.setColor(Constants.colorHeapBorder);
+			g.drawLine(hsplit, 0, hsplit, getHeight() - 1);
+			for (int s : vsplits) {
+				g.drawLine(0, s - 1, getWidth(), s - 1);
+			}
+		}
 	}
 
 	private class PanelList extends JPanel {
 		private int[] splits;
 
-		public PanelList(HeapList e) {
+		PanelList(HeapList e) {
 			setBackground(Constants.colorHeapVal);
 			setLayout(null);
 			splits = new int[e.items.size()];
@@ -98,9 +125,8 @@ class HeapEntityComponent extends JPanel {
 		}
 
 		@Override
-		protected void paintComponent(Graphics _g) {
-			super.paintComponent(_g);
-			Graphics2D g = (Graphics2D) _g;
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
 
 			g.setColor(Constants.colorHeapBorder);
 			g.drawLine(1, getHeight() - 1, getWidth(), getHeight() - 1);

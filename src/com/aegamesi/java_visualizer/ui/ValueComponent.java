@@ -13,7 +13,7 @@ class ValueComponent extends JPanel {
 		this.val = val;
 		viz.registerValueComponent(this);
 
-		setBackground(Constants.colorFrameBG.darker());
+		setOpaque(false);
 		setLayout(new BorderLayout());
 
 

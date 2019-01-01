@@ -14,7 +14,7 @@ class Constants {
 	static final Color colorHeapKey = new Color(0xFA, 0xEB, 0xBF);
 	static final Color colorHeapVal = new Color(0xFF, 0xFF, 0xC6);
 	static final Color colorHeapLabel = new Color(0x55, 0x55, 0x55);
-	static final Color colorHeapBorder = new Color(0x2, 0x2, 0x2);
+	static final Color colorHeapBorder = new Color(0x88, 0x88, 0x88);
 
 	static final Color colorPointer = new Color(0x00, 0x55, 0x83);
 	static final Color colorPointerInactive = new Color(0xCC, 0xCC, 0xCC);
