@@ -13,14 +13,18 @@ class ValueComponent extends JPanel {
 		this.val = val;
 		viz.registerValueComponent(this);
 
-		setBackground(Constants.colorFrameBG.brighter());
+		setBackground(Constants.colorFrameBG.darker());
 		setLayout(new BorderLayout());
+
 
 		JLabel label = new JLabel(val.toString());
 		if (val.type == Value.Type.STRING) {
 			label.setFont(Constants.fontUIMono);
 		} else {
 			label.setFont(Constants.fontUI);
+		}
+		if (val.type == Value.Type.REFERENCE) {
+			label.setText(" ");
 		}
 		add(label);
 	}
