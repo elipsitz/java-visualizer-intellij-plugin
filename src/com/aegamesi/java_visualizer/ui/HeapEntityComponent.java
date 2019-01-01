@@ -4,13 +4,13 @@ import com.aegamesi.java_visualizer.model.HeapEntity;
 import com.aegamesi.java_visualizer.model.HeapList;
 import com.aegamesi.java_visualizer.model.HeapObject;
 import com.aegamesi.java_visualizer.model.Value;
-import com.intellij.util.ui.JBUI;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Map;
@@ -36,7 +36,7 @@ class HeapEntityComponent extends JPanel {
 		if (entity instanceof HeapObject) {
 			mainPanel = makePanelForObject((HeapObject) entity);
 		} else if (entity instanceof HeapList) {
-			mainPanel = makePanelForList((HeapList) entity);
+			mainPanel = new PanelList((HeapList) entity);
 		}
 
 		if (mainPanel != null) {
@@ -72,19 +72,41 @@ class HeapEntityComponent extends JPanel {
 		return panel;
 	}
 
-	private JPanel makePanelForList(HeapList e) {
-		JPanel panel = new JPanel();
-		panel.setBackground(Constants.colorHeapVal);
-		panel.setBorder(JBUI.Borders.empty(8));
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+	private class PanelList extends JPanel {
+		private int[] splits;
 
-		for (int i = 0; i < e.items.size(); i++) {
-			if (i > 0) {
-				panel.add(Box.createHorizontalStrut(8));
+		public PanelList(HeapList e) {
+			setBackground(Constants.colorHeapVal);
+			setLayout(null);
+			splits = new int[e.items.size()];
+
+			int height = 0;
+			int x = 0;
+			int y = 8;
+			for (int i = 0; i < e.items.size(); i++) {
+				splits[i] = x;
+				ValueComponent value = new ValueComponent(viz, e.items.get(i));
+				Dimension size = value.getPreferredSize();
+				x += 8;
+				value.setBounds(x, y, size.width, size.height);
+				x += size.width + 8;
+				add(value);
+				height = Math.max(height, size.height);
 			}
-			ValueComponent value = new ValueComponent(viz, e.items.get(i));
-			panel.add(value);
+			height += 16;
+			setPreferredSize(new Dimension(x, height));
 		}
-		return panel;
+
+		@Override
+		protected void paintComponent(Graphics _g) {
+			super.paintComponent(_g);
+			Graphics2D g = (Graphics2D) _g;
+
+			g.setColor(Constants.colorHeapBorder);
+			g.drawLine(1, getHeight() - 1, getWidth(), getHeight() - 1);
+			for (int s : splits) {
+				g.drawLine(s + 1, 0, s + 1, getHeight() - 1);
+			}
+		}
 	}
 }
