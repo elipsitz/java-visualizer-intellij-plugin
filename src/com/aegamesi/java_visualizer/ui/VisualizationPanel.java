@@ -10,8 +10,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +19,7 @@ public class VisualizationPanel extends JPanel {
 	private ExecutionTrace trace = null;
 
 	private List<ValueComponent> referenceComponents;
-	private List<Shape> pointerShapes;
+	private List<PointerConnection> pointerConnections;
 	private StackPanel stackPanel;
 	private HeapPanel heapPanel;
 
@@ -29,7 +27,7 @@ public class VisualizationPanel extends JPanel {
 		setBackground(colorBackground);
 		setLayout(null);
 		referenceComponents = new ArrayList<>();
-		pointerShapes = new ArrayList<>();
+		pointerConnections = new ArrayList<>();
 	}
 
 	public void setTrace(ExecutionTrace t) {
@@ -72,7 +70,7 @@ public class VisualizationPanel extends JPanel {
 	}
 
 	private void computePointerPaths() {
-		pointerShapes.clear();
+		pointerConnections.clear();
 
 		for (ValueComponent ref : referenceComponents) {
 			Rectangle refBounds = getRelativeBounds(this, ref);
@@ -80,33 +78,13 @@ public class VisualizationPanel extends JPanel {
 			HeapEntityComponent obj = heapPanel.getHeapComponents().get(refId);
 			Rectangle objBounds = getRelativeBounds(this, obj);
 
-			Shape p = constructPath(
+			PointerConnection p = new PointerConnection(
 					refBounds.x + refBounds.width,
 					refBounds.y + (refBounds.height / 2.0),
 					objBounds.x,
 					objBounds.y + (objBounds.height / 2.0)
 			);
-			pointerShapes.add(p);
-		}
-	}
-
-	private Shape constructPath(double x0, double y0, double x1, double y1) {
-		double dist = Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
-
-		if (dist < 50.0) {
-			return new Line2D.Double(x0, y0, x1, y1);
-		} else {
-			/*
-			// Line style: cubic bezier
-			double delta = 30.0;
-			return new CubicCurve2D.Double(
-					x0, y0,
-					x0 + delta, y0,
-					x1 - delta, y1,
-					x1, y1
-			);*/
-			// Line style: "state machine"
-			return new PointerShape(x0, y0, x1, y1);
+			pointerConnections.add(p);
 		}
 	}
 
@@ -116,9 +94,8 @@ public class VisualizationPanel extends JPanel {
 		Graphics2D g = (Graphics2D) _g;
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setColor(colorPointer);
-		for (Shape path : pointerShapes) {
-			g.draw(path);
+		for (PointerConnection p : pointerConnections) {
+			p.paint(g);
 		}
 	}
 

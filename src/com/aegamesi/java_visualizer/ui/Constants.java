@@ -35,6 +35,8 @@ class Constants {
 	static final int padHeapHorizontal = 16;
 	static final int padHeapContinuation = 32;
 
+	static final int pointerSrcRadius = 3;
+
 	/**
 	 * Returns the Bounds of the component, relative to this panel.
 	 */
