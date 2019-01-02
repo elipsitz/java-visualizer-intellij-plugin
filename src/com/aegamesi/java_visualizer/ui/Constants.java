@@ -22,17 +22,18 @@ class Constants {
 	static final Color colorPointer = new Color(0x00, 0x55, 0x83);
 	static final Color colorPointerInactive = new Color(0xCC, 0xCC, 0xCC);
 
-	static final Font fontMessage = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
+	static final Font fontTitle = new Font(Font.SANS_SERIF, Font.BOLD, 14);
 	static final Font fontUI = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 	static final Font fontUIMono = new Font(Font.MONOSPACED, Font.PLAIN, 12);
 	static final Font fontUISmall = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
 
-	static final int centerMargin = 64;
-	static final int outerPadding = 8;
-
-	static final int paddingHeapVertical = 8;
-	static final int paddingHeapHorizontal = 16;
-	static final int paddingHeapContinuation = 32;
+	static final int padOuter = 8;
+	static final int padTitle = 16;
+	static final int padCenter = 64;
+	static final int padStackVertical = 8;
+	static final int padHeapVertical = 8;
+	static final int padHeapHorizontal = 16;
+	static final int padHeapContinuation = 32;
 
 	/**
 	 * Returns the Bounds of the component, relative to this panel.

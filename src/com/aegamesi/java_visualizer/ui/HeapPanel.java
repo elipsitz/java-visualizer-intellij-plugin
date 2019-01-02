@@ -68,17 +68,17 @@ class HeapPanel extends JPanel {
 			Dimension size = component.getPreferredSize();
 			boolean sameRow = lastEntity == null || lastEntity.getEntity().hasSameStructure(component.getEntity());
 			if (!sameRow) {
-				y += rowHeight + Constants.paddingHeapVertical;
+				y += rowHeight + Constants.padHeapVertical;
 				x = 0;
 				rowHeight = 0;
 			}
 			Rectangle originBounds = Constants.getRelativeBounds(this, vc);
 			if (originBounds != null) {
-				x = Math.max(x, originBounds.x + Constants.paddingHeapContinuation);
+				x = Math.max(x, originBounds.x + Constants.padHeapContinuation);
 			}
 			component.setBounds(x, y, size.width, size.height);
 
-			x += size.width + Constants.paddingHeapHorizontal;
+			x += size.width + Constants.padHeapHorizontal;
 			rowHeight = Math.max(rowHeight, size.height);
 			bounds = bounds.union(component.getBounds());
 

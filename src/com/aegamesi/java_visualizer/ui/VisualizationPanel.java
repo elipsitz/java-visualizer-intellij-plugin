@@ -1,10 +1,8 @@
 package com.aegamesi.java_visualizer.ui;
 
 import com.aegamesi.java_visualizer.model.ExecutionTrace;
-import com.aegamesi.java_visualizer.model.Frame;
 import com.aegamesi.java_visualizer.model.Value;
 
-import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Dimension;
@@ -17,15 +15,18 @@ import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.aegamesi.java_visualizer.ui.Constants.*;
+
 public class VisualizationPanel extends JPanel {
 	private ExecutionTrace trace = null;
 
 	private List<ValueComponent> referenceComponents;
 	private List<Shape> pointerShapes;
+	private StackPanel stackPanel;
 	private HeapPanel heapPanel;
 
 	public VisualizationPanel() {
-		setBackground(Constants.colorBackground);
+		setBackground(colorBackground);
 		setLayout(null);
 		referenceComponents = new ArrayList<>();
 		pointerShapes = new ArrayList<>();
@@ -43,41 +44,30 @@ public class VisualizationPanel extends JPanel {
 	}
 
 	private void buildUI() {
-		// Create and place the stack components
-		Box frames = Box.createVerticalBox();
-		JLabel frameLabel = new JLabel("Frames");
-		frameLabel.setFont(Constants.fontMessage);
-		frameLabel.setHorizontalAlignment(JLabel.RIGHT);
-		frames.add(frameLabel);
-		frames.add(Box.createVerticalStrut(24));
-		for (int i = trace.frames.size() - 1; i >= 0; i -= 1) {
-			Frame f = trace.frames.get(i);
-			frames.add(new StackFrameComponent(this, f, i == 0));
-			frames.add(Box.createVerticalStrut(8));
-		}
-		add(frames);
-
+		JLabel labelStack = new JLabel("Call Stack", JLabel.RIGHT);
+		JLabel labelHeap = new JLabel("Objects", JLabel.LEFT);
+		labelStack.setFont(fontTitle);
+		labelHeap.setFont(fontTitle);
+		stackPanel = new StackPanel(this, trace.frames);
 		heapPanel = new HeapPanel(this, trace.heap);
+
+		add(labelStack);
+		add(labelHeap);
+		add(stackPanel);
 		add(heapPanel);
 
-		Dimension sizeFrames = frames.getPreferredSize();
+		int labelHeight = Math.max(labelStack.getPreferredSize().height, labelHeap.getPreferredSize().height);
+		Dimension sizeStack = stackPanel.getPreferredSize();
 		Dimension sizeHeap = heapPanel.getPreferredSize();
-		frames.setBounds(
-				Constants.outerPadding,
-				Constants.outerPadding,
-				sizeFrames.width,
-				sizeFrames.height
-		);
-		heapPanel.setBounds(
-				Constants.outerPadding + sizeFrames.width + Constants.centerMargin,
-				Constants.outerPadding,
-				sizeHeap.width,
-				sizeHeap.height
-		);
-
+		int stackWidth = Math.max(labelStack.getPreferredSize().width, sizeStack.width);
+		int heapWidth = Math.max(labelHeap.getPreferredSize().width, sizeHeap.width);
+		labelStack.setBounds(padOuter, padOuter, stackWidth, labelHeight);
+		labelHeap.setBounds(padOuter + stackWidth + padCenter, padOuter, heapWidth, labelHeight);
+		stackPanel.setBounds(padOuter, padOuter + labelHeight + padTitle, stackWidth, sizeStack.height);
+		heapPanel.setBounds(padOuter + stackWidth + padCenter, padOuter + labelHeight + padTitle, heapWidth, sizeHeap.height);
 		setPreferredSize(new Dimension(
-				Constants.outerPadding + sizeFrames.width + Constants.centerMargin + sizeHeap.width,
-				Constants.outerPadding + Math.max(sizeFrames.height, sizeHeap.height)
+				padOuter + stackWidth + padCenter + heapWidth,
+				padOuter + labelHeight + padTitle + Math.max(sizeStack.height, sizeHeap.height)
 		));
 	}
 
@@ -85,10 +75,10 @@ public class VisualizationPanel extends JPanel {
 		pointerShapes.clear();
 
 		for (ValueComponent ref : referenceComponents) {
-			Rectangle refBounds = Constants.getRelativeBounds(this, ref);
+			Rectangle refBounds = getRelativeBounds(this, ref);
 			long refId = ref.getValue().reference;
 			HeapEntityComponent obj = heapPanel.getHeapComponents().get(refId);
-			Rectangle objBounds = Constants.getRelativeBounds(this, obj);
+			Rectangle objBounds = getRelativeBounds(this, obj);
 
 			Shape p = constructPath(
 					refBounds.x + refBounds.width,
@@ -126,7 +116,7 @@ public class VisualizationPanel extends JPanel {
 		Graphics2D g = (Graphics2D) _g;
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setColor(Constants.colorPointer);
+		g.setColor(colorPointer);
 		for (Shape path : pointerShapes) {
 			g.draw(path);
 		}
