@@ -35,7 +35,7 @@ class StackFrameComponent extends JPanel {
 		int y = 1;
 		for (Map.Entry<String, Value> local : frame.locals.entrySet()) {
 			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
-			ValueComponent value = new ValueComponent(viz, local.getValue());
+			ValueComponent value = new ValueComponent(viz, local.getValue(), first);
 
 			c.gridx = 0;
 			c.gridy = y;

@@ -12,6 +12,7 @@ class PointerConnection {
 	private Shape mainShape;
 	private Path2D arrow;
 
+	private boolean active;
 	private double x1, y1, x2, y2;
 
 	private static int computeSegment(double x1, double y1, double x2, double y2) {
@@ -34,7 +35,8 @@ class PointerConnection {
 		return p;
 	}
 
-	PointerConnection(double x1, double y1, double x2, double y2) {
+	PointerConnection(boolean active, double x1, double y1, double x2, double y2) {
+		this.active = active;
 		this.x1 = x1;
 		this.y1 = y1;
 		this.x2 = x2;
@@ -78,7 +80,7 @@ class PointerConnection {
 	}
 
 	void paint(Graphics2D g) {
-		g.setColor(Constants.colorPointer);
+		g.setColor(active ? Constants.colorPointer : Constants.colorPointerInactive);
 		g.draw(mainShape);
 		int r = Constants.pointerSrcRadius;
 		g.fillOval((int) (x1 - r), (int) (y1 - r), r * 2, r * 2);

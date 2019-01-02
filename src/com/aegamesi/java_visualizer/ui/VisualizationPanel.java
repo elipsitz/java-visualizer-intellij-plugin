@@ -79,6 +79,7 @@ public class VisualizationPanel extends JPanel {
 			Rectangle objBounds = getRelativeBounds(this, obj);
 
 			PointerConnection p = new PointerConnection(
+					ref.isActive(),
 					refBounds.x + refBounds.width,
 					refBounds.y + (refBounds.height / 2.0),
 					objBounds.x,

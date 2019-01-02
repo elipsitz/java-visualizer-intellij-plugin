@@ -8,9 +8,15 @@ import java.awt.BorderLayout;
 
 class ValueComponent extends JPanel {
 	private Value val;
+	private boolean active;
 
 	ValueComponent(VisualizationPanel viz, Value val) {
+		this(viz, val, true);
+	}
+
+	ValueComponent(VisualizationPanel viz, Value val, boolean active) {
 		this.val = val;
+		this.active = active;
 		viz.registerValueComponent(this);
 
 		setOpaque(false);
@@ -31,5 +37,9 @@ class ValueComponent extends JPanel {
 
 	Value getValue() {
 		return val;
+	}
+
+	boolean isActive() {
+		return active;
 	}
 }
