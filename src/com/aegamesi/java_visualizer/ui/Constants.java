@@ -21,6 +21,7 @@ class Constants {
 
 	static final Color colorPointer = new Color(0x00, 0x55, 0x83);
 	static final Color colorPointerInactive = new Color(0xCC, 0xCC, 0xCC);
+	static final Color colorPointerSelected = new Color(0xE9, 0x3F, 0x34);
 
 	static final Font fontTitle = new Font(Font.SANS_SERIF, Font.BOLD, 14);
 	static final Font fontUI = new Font(Font.SANS_SERIF, Font.PLAIN, 12);

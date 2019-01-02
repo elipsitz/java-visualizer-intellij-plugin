@@ -2,16 +2,19 @@ package com.aegamesi.java_visualizer.ui;
 
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
 import java.awt.geom.QuadCurve2D;
 
 class PointerConnection {
 	private static final double curviness = 10.0;
 	private Shape mainShape;
+	private Path2D arrow;
 
 	private double x1, y1, x2, y2;
 
-	private int computeSegment(double x1, double y1, double x2, double y2) {
+	private static int computeSegment(double x1, double y1, double x2, double y2) {
 		if (x1 <= x2 && y2 <= y1)
 			return 1;
 		else if (x1 <= x2 && y1 <= y2)
@@ -21,16 +24,28 @@ class PointerConnection {
 		return 4;
 	}
 
-	// topcenter -> leftmiddle
+	private static Path2D makeArrow() {
+		Path2D.Double p = new Path2D.Double();
+		p.moveTo(1.0, 0.0);
+		p.lineTo(-9.0, -3.5);
+		p.lineTo(-4.5, 0.0);
+		p.lineTo(-9.0, 3.5);
+		p.closePath();
+		return p;
+	}
+
 	PointerConnection(double x1, double y1, double x2, double y2) {
 		this.x1 = x1;
 		this.y1 = y1;
 		this.x2 = x2;
 		this.y2 = y2;
 		double dist = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+		double dx, dy;
 
-		if (dist < 75) {
+		if (dist < 50) {
 			mainShape = new Line2D.Double(x1, y1, x2, y2);
+			dx = x2 - x1;
+			dy = y2 - y1;
 		} else {
 			// Line style: "state machine" from JsPlumb
 			int segment = computeSegment(x1, y1, x2, y2);
@@ -41,17 +56,25 @@ class PointerConnection {
 			double cx = midx + ((segment == 1 || segment == 3) ? -curviness : curviness);
 
 			mainShape = new QuadCurve2D.Double(x1, y1, cx, cy, x2, y2);
-		}
+			dx = x2 - cx;
+			dy = y2 - cy;
 
-		/*
+
 			// Line style: cubic bezier
-			double delta = 30.0;
-			return new CubicCurve2D.Double(
+			/* double delta = 30.0;
+			mainShape = new CubicCurve2D.Double(
 					x1, y1,
 					x1 + delta, y1,
 					x2 - delta, y2,
 					x2, y2
-			);*/
+			);
+			dx = 1.0;
+			dy = 0.0; */
+		}
+
+		arrow = makeArrow();
+		arrow.transform(AffineTransform.getRotateInstance(dx, dy));
+		arrow.transform(AffineTransform.getTranslateInstance(x2, y2));
 	}
 
 	void paint(Graphics2D g) {
@@ -59,5 +82,6 @@ class PointerConnection {
 		g.draw(mainShape);
 		int r = Constants.pointerSrcRadius;
 		g.fillOval((int) (x1 - r), (int) (y1 - r), r * 2, r * 2);
+		g.fill(arrow);
 	}
 }
