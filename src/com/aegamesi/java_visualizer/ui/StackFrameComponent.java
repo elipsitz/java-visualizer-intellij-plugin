@@ -8,6 +8,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +24,13 @@ class StackFrameComponent extends JPanel {
 		this.viz = viz;
 		setBackground(first ? Constants.colorFrameBGFirst : Constants.colorFrameBG);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setBorder(JBUI.Borders.customLine(Constants.colorFrameOutline, 0, 1, 0, 0));
 
 		JLabel labelName = new JLabel(frame.name, JLabel.LEFT);
 		labelName.setFont(Constants.fontUIMono);
 		labelName.setBorder(JBUI.Borders.empty(4));
 		labelName.setAlignmentX(RIGHT_ALIGNMENT);
+		labelName.setMaximumSize(Constants.maxDimension);
 		add(labelName);
 
 		List<JComponent> keys = new ArrayList<>();
@@ -33,7 +38,9 @@ class StackFrameComponent extends JPanel {
 		for (Map.Entry<String, Value> local : frame.locals.entrySet()) {
 			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
 			ValueComponent value = new ValueComponent(viz, local.getValue(), first);
-			value.setBorder(JBUI.Borders.customLine(Constants.colorFrameOutline, 0, 1, 1, 0));
+			Border b1 = JBUI.Borders.customLine(Constants.colorFrameOutline, 0, 1, 1, 0);
+			Border b2 = JBUI.Borders.empty(2);
+			value.setBorder(new CompoundBorder(b1, b2));
 			keys.add(localLabel);
 			vals.add(value);
 		}
@@ -44,5 +51,10 @@ class StackFrameComponent extends JPanel {
 		locals.setAlignmentX(RIGHT_ALIGNMENT);
 		locals.setMaximumSize(locals.getPreferredSize());
 		add(locals);
+	}
+
+	@Override
+	public Dimension getMaximumSize() {
+		return Constants.maxDimension;
 	}
 }

@@ -2,6 +2,7 @@ package com.aegamesi.java_visualizer.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -39,6 +40,8 @@ class Constants {
 
 	static final int pointerSrcRadius = 3;
 	static final int pointerWidth = 16;
+
+	static final Dimension maxDimension = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 
 	/**
 	 * Returns the Bounds of the component, relative to this panel.
