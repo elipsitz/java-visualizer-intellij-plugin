@@ -281,11 +281,11 @@ public class Tracer {
 			ObjectReference entrySet = (ObjectReference) invokeSimple(thread, obj, "entrySet");
 			Iterator<com.sun.jdi.Value> i = getIterator(thread, entrySet);
 			while (i.hasNext()) {
-				HeapMap.Pair pair = new HeapMap.Pair();
-
 				ObjectReference entry = (ObjectReference) i.next();
+				HeapMap.Pair pair = new HeapMap.Pair();
 				pair.key = convertValue(invokeSimple(thread, entry, "getKey"));
 				pair.val = convertValue(invokeSimple(thread, entry, "getValue"));
+				out.pairs.add(pair);
 			}
 			return out;
 		}

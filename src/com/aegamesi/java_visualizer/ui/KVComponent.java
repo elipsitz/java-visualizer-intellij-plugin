@@ -49,13 +49,15 @@ class KVComponent extends JPanel {
 		for (int i = 0; i < n; i += 1) {
 			JComponent key = keys.get(i);
 			JComponent val = vals.get(i);
-			int h = Math.max(key.getPreferredSize().height, val.getPreferredSize().height);
+			Dimension keySize = key.getPreferredSize();
+			Dimension valSize = val.getPreferredSize();
+			int h = Math.max(keySize.height, valSize.height);
 
 			add(key);
 			add(val);
 			y += padding;
-			key.setBounds(padding, y, keyWidth, h);
-			val.setBounds((padding * 3) + keyWidth, y, valueWidth, h);
+			key.setBounds(padding + keyWidth - keySize.width, y, keySize.width, h);
+			val.setBounds((padding * 3) + keyWidth, y, valSize.width, h);
 			y += h + padding;
 			vsplits[i] = y;
 		}
