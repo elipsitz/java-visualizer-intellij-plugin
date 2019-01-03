@@ -5,8 +5,8 @@ import com.intellij.ui.components.JBScrollPane;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,8 +26,9 @@ public class UITester {
 
 		// toy above
 
-		VisualizationPanel panel = new VisualizationPanel();
 		ExecutionTrace trace = makeTrace();
+		System.out.println(trace.toJsonString());
+		VisualizationPanel panel = new VisualizationPanel();
 		panel.setTrace(trace);
 
 		JScrollPane scrollPane = new JBScrollPane(panel);
@@ -40,9 +41,7 @@ public class UITester {
 	}
 
 	private static ExecutionTrace makeTrace() throws Exception {
-		ObjectInputStream o = new ObjectInputStream(new FileInputStream("/tmp/jv.ser"));
-		ExecutionTrace e = (ExecutionTrace) o.readObject();
-		o.close();
-		return e;
+		String json = new String(Files.readAllBytes(Paths.get("/Users/eli/Desktop/trace.json")));
+		return ExecutionTrace.fromJsonString(json);
 	}
 }
