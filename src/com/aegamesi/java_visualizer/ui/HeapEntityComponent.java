@@ -52,60 +52,21 @@ class HeapEntityComponent extends JPanel {
 		return valueComponents;
 	}
 
-	private class PanelObject extends JPanel {
-		private int hsplit;
-		private int[] vsplits;
-
+	private class PanelObject extends KVComponent {
 		PanelObject(HeapObject e) {
-			setLayout(null);
-
-			int keyWidth = 0;
-			int valueWidth = 0;
-
 			List<JLabel> keys = new ArrayList<>();
 			List<ValueComponent> vals = new ArrayList<>();
 			for (Map.Entry<String, Value> local : e.fields.entrySet()) {
 				JLabel key = new JLabel(local.getKey(), JLabel.RIGHT);
 				ValueComponent val = new ValueComponent(viz, local.getValue());
 				valueComponents.add(val);
-				keyWidth = Math.max(keyWidth, key.getPreferredSize().width);
-				valueWidth = Math.max(valueWidth, val.getPreferredSize().width);
 				keys.add(key);
 				vals.add(val);
-				add(key);
-				add(val);
 			}
 
-			int y = 0;
-			vsplits = new int[e.fields.size()];
-			for (int i = 0; i < e.fields.size(); i += 1) {
-				JLabel key = keys.get(i);
-				ValueComponent val = vals.get(i);
-				int h = Math.max(key.getPreferredSize().height, val.getPreferredSize().height);
-
-				y += 4;
-				key.setBounds(4, y, keyWidth, h);
-				val.setBounds(4 + keyWidth + 4 + 4, y, valueWidth, h);
-				y += h + 4;
-				vsplits[i] = y;
-			}
-
-			setPreferredSize(new Dimension(16 + keyWidth + valueWidth, y));
-			hsplit = 4 + keyWidth + 4;
-		}
-
-		@Override
-		protected void paintComponent(Graphics g) {
-			g.setColor(Constants.colorHeapKey);
-			g.fillRect(0, 0, hsplit, getHeight());
-			g.setColor(Constants.colorHeapVal);
-			g.fillRect(hsplit, 0, getWidth() - hsplit, getHeight());
-
-			g.setColor(Constants.colorHeapBorder);
-			g.drawLine(hsplit, 0, hsplit, getHeight() - 1);
-			for (int s : vsplits) {
-				g.drawLine(0, s - 1, getWidth(), s - 1);
-			}
+			setPadding(Constants.padHeapMap);
+			setComponents(keys, vals);
+			build();
 		}
 	}
 

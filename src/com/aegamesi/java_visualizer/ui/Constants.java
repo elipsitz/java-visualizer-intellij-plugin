@@ -35,6 +35,7 @@ class Constants {
 	static final int padHeapVertical = 8;
 	static final int padHeapHorizontal = 16;
 	static final int padHeapContinuation = 32;
+	static final int padHeapMap = 4;
 
 	static final int pointerSrcRadius = 3;
 	static final int pointerWidth = 16;
