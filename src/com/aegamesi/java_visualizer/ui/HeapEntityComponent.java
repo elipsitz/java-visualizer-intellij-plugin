@@ -67,6 +67,7 @@ class HeapEntityComponent extends JPanel {
 				vals.add(val);
 			}
 
+			setColors(Constants.colorHeapKey, Constants.colorHeapVal, Constants.colorHeapBorder);
 			setPadding(Constants.padHeapMap);
 			setComponents(keys, vals);
 			build();
@@ -86,6 +87,7 @@ class HeapEntityComponent extends JPanel {
 				vals.add(val);
 			}
 
+			setColors(Constants.colorHeapKey, Constants.colorHeapVal, Constants.colorHeapBorder);
 			setPadding(Constants.padHeapMap);
 			setComponents(keys, vals);
 			build();

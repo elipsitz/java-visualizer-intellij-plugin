@@ -2,6 +2,7 @@ package com.aegamesi.java_visualizer.ui;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.List;
@@ -14,6 +15,9 @@ class KVComponent extends JPanel {
 	private int hsplit;
 	private int[] vsplits;
 	private int padding;
+	private Color colorLeft;
+	private Color colorRight;
+	private Color colorBorder;
 
 	private List<? extends JComponent> keys;
 	private List<? extends JComponent> vals;
@@ -32,6 +36,12 @@ class KVComponent extends JPanel {
 		}
 		this.keys = keys;
 		this.vals = vals;
+	}
+
+	void setColors(Color colorLeft, Color colorRight, Color colorBorder) {
+		this.colorLeft = colorLeft;
+		this.colorRight = colorRight;
+		this.colorBorder = colorBorder;
 	}
 
 	void build() {
@@ -57,7 +67,7 @@ class KVComponent extends JPanel {
 			add(val);
 			y += padding;
 			key.setBounds(padding + keyWidth - keySize.width, y, keySize.width, h);
-			val.setBounds((padding * 3) + keyWidth, y, valSize.width, h);
+			val.setBounds((padding * 3) + keyWidth, y, valueWidth, h);
 			y += h + padding;
 			vsplits[i] = y;
 		}
@@ -69,15 +79,22 @@ class KVComponent extends JPanel {
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		g.setColor(Constants.colorHeapKey);
-		g.fillRect(0, 0, hsplit, getHeight());
-		g.setColor(Constants.colorHeapVal);
-		g.fillRect(hsplit, 0, getWidth() - hsplit, getHeight());
+		if (colorLeft != null) {
+			g.setColor(Constants.colorHeapKey);
+			g.fillRect(0, 0, hsplit, getHeight());
+		}
 
-		g.setColor(Constants.colorHeapBorder);
-		g.drawLine(hsplit, 0, hsplit, getHeight() - 1);
-		for (int s : vsplits) {
-			g.drawLine(0, s - 1, getWidth(), s - 1);
+		if (colorRight != null) {
+			g.setColor(Constants.colorHeapVal);
+			g.fillRect(hsplit, 0, getWidth() - hsplit, getHeight());
+		}
+
+		if (colorBorder != null) {
+			g.setColor(Constants.colorHeapBorder);
+			g.drawLine(hsplit, 0, hsplit, getHeight() - 1);
+			for (int s : vsplits) {
+				g.drawLine(0, s - 1, getWidth(), s - 1);
+			}
 		}
 	}
 }
