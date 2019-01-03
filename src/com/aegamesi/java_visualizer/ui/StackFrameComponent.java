@@ -36,6 +36,7 @@ class StackFrameComponent extends JPanel {
 		for (Map.Entry<String, Value> local : frame.locals.entrySet()) {
 			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
 			ValueComponent value = new ValueComponent(viz, local.getValue(), first);
+			value.setBorder(JBUI.Borders.customLine(Constants.colorFrameOutline, 0, 1, 1, 0));
 
 			c.gridx = 0;
 			c.gridy = y;

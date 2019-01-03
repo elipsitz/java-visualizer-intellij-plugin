@@ -80,7 +80,7 @@ public class VisualizationPanel extends JPanel {
 
 			PointerConnection p = new PointerConnection(
 					ref.isActive(),
-					refBounds.x + refBounds.width,
+					refBounds.x + refBounds.width - (pointerWidth / 2.0),
 					refBounds.y + (refBounds.height / 2.0),
 					objBounds.x,
 					objBounds.y + (objBounds.height / 2.0)

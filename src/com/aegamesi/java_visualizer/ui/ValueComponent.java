@@ -5,6 +5,7 @@ import com.aegamesi.java_visualizer.model.Value;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 class ValueComponent extends JPanel {
 	private Value val;
@@ -22,7 +23,6 @@ class ValueComponent extends JPanel {
 		setOpaque(false);
 		setLayout(new BorderLayout());
 
-
 		JLabel label = new JLabel(val.toString());
 		if (val.type == Value.Type.STRING) {
 			label.setFont(Constants.fontUIMono);
@@ -30,7 +30,9 @@ class ValueComponent extends JPanel {
 			label.setFont(Constants.fontUI);
 		}
 		if (val.type == Value.Type.REFERENCE) {
-			label.setText(" ");
+			int h = label.getPreferredSize().height;
+			setLayout(null);
+			setPreferredSize(new Dimension(Constants.pointerWidth, h));
 		}
 		add(label);
 	}
