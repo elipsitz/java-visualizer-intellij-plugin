@@ -5,16 +5,17 @@
   <vendor email="eli.lipsitz@berkeley.edu" url="https://github.com/aegamesi">Eli Lipsitz</vendor>
 
   <description><![CDATA[
-      Debugging aid: stack/heap visualizer (via Java Tutor).
+      A tool to visualize the call stack and objects on the heap (as a box and
+      pointer diagram) while debugging Java applications.
     ]]></description>
 
   <change-notes><![CDATA[
-      Initial separation of CS 61B style checker and visualizer.
+      Rewritten completely to be much faster and more stable.
     ]]>
-</change-notes>
+  </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="181.0"/>
+  <idea-version since-build="162.0"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
