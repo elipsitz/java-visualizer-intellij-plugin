@@ -2,7 +2,6 @@ package com.aegamesi.java_visualizer;
 
 import com.aegamesi.java_visualizer.model.ExecutionTrace;
 import com.aegamesi.java_visualizer.ui.VisualizationPanel;
-import com.intellij.ui.components.JBScrollPane;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -17,7 +16,7 @@ public class Tester {
 		VisualizationPanel panel = new VisualizationPanel();
 		panel.setTrace(trace);
 
-		JScrollPane scrollPane = new JBScrollPane(panel);
+		JScrollPane scrollPane = new JScrollPane(panel);
 
 		JFrame f = new JFrame();
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
