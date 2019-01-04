@@ -80,7 +80,7 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 				CONTENT_ID,
 				scrollPane,
 				"Java Visualizer",
-				IconLoader.getIcon("/icons/jv.png"),
+				IconLoader.getIcon("/icons/viz.png"),
 				null);
 		UIUtil.invokeLaterIfNeeded(() -> ui.addContent(content));
 	}
