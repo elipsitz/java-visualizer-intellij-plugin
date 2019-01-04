@@ -64,8 +64,8 @@ public class VisualizationPanel extends JPanel {
 		stackPanel.setBounds(padOuter, padOuter + labelHeight + padTitle, stackWidth, sizeStack.height);
 		heapPanel.setBounds(padOuter + stackWidth + padCenter, padOuter + labelHeight + padTitle, heapWidth, sizeHeap.height);
 		setPreferredSize(new Dimension(
-				padOuter + stackWidth + padCenter + heapWidth,
-				padOuter + labelHeight + padTitle + Math.max(sizeStack.height, sizeHeap.height)
+				(padOuter * 2) + stackWidth + padCenter + heapWidth,
+				(padOuter * 2) + labelHeight + padTitle + Math.max(sizeStack.height, sizeHeap.height)
 		));
 	}
 

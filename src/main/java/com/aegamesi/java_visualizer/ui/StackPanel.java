@@ -15,7 +15,9 @@ public class StackPanel extends JPanel {
 		for (int i = callStack.size() - 1; i >= 0; i -= 1) {
 			Frame f = callStack.get(i);
 			add(new StackFrameComponent(viz, f, i == 0));
-			add(Box.createVerticalStrut(Constants.padStackVertical));
+			if (i > 0) {
+				add(Box.createVerticalStrut(Constants.padStackVertical));
+			}
 		}
 	}
 }
