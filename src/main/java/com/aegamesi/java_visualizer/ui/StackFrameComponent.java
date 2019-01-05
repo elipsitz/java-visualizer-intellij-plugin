@@ -38,6 +38,7 @@ class StackFrameComponent extends JPanel {
 		List<JComponent> vals = new ArrayList<>();
 		for (Map.Entry<String, Value> local : frame.locals.entrySet()) {
 			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
+			localLabel.setFont(Constants.fontUI);
 			ValueComponent value = new ValueComponent(viz, local.getValue(), first);
 			Border b1 = new MatteBorder(0, 1, 1, 0, Constants.colorFrameOutline);
 			Border b2 = BorderFactory.createEmptyBorder(2, 2, 2, 2);
