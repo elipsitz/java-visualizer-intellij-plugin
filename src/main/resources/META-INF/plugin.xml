@@ -1,7 +1,6 @@
 <idea-plugin>
   <id>com.aegamesi.java_visualizer.plugin</id>
   <name>Java Visualizer</name>
-  <version>2.0.0</version>
   <vendor email="eli.lipsitz@berkeley.edu" url="https://github.com/aegamesi">Eli Lipsitz</vendor>
 
   <description><![CDATA[
@@ -19,9 +18,7 @@
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+  <depends>com.intellij.modules.java</depends>
 
   <project-components>
     <component>
