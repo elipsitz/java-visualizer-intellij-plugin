@@ -1,0 +1,274 @@
+{
+  "frames": [
+    {
+      "local_names": [
+        "a",
+        "emptyArr",
+        "emptyList"
+      ],
+      "local_vals": [
+        [
+          "LONG",
+          0
+        ],
+        [
+          "REFERENCE",
+          900
+        ],
+        [
+          "REFERENCE",
+          901
+        ]
+      ],
+      "name": "testMethod:21"
+    },
+    {
+      "local_names": [
+        "a",
+        "b"
+      ],
+      "local_vals": [
+        [
+          "LONG",
+          1
+        ],
+        [
+          "LONG",
+          0
+        ]
+      ],
+      "name": "testMethod:24"
+    },
+    {
+      "local_names": [
+        "a",
+        "b"
+      ],
+      "local_vals": [
+        [
+          "LONG",
+          2
+        ],
+        [
+          "LONG",
+          1
+        ]
+      ],
+      "name": "testMethod:24"
+    },
+    {
+      "local_names": [
+        "a",
+        "b"
+      ],
+      "local_vals": [
+        [
+          "LONG",
+          3
+        ],
+        [
+          "LONG",
+          2
+        ]
+      ],
+      "name": "testMethod:24"
+    },
+    {
+      "local_names": [
+        "a",
+        "arr",
+        "myList",
+        "mymap",
+        "tc2"
+      ],
+      "local_vals": [
+        [
+          "STRING",
+          "hello"
+        ],
+        [
+          "REFERENCE",
+          894
+        ],
+        [
+          "REFERENCE",
+          893
+        ],
+        [
+          "REFERENCE",
+          902
+        ],
+        [
+          "LONG",
+          0
+        ]
+      ],
+      "name": "main:45"
+    }
+  ],
+  "heap": [
+    {
+      "id": 893,
+      "label": "java.util.ArrayList",
+      "type": "LIST",
+      "items": [
+        [
+          "REFERENCE",
+          896
+        ],
+        [
+          "REFERENCE",
+          897
+        ],
+        [
+          "REFERENCE",
+          898
+        ]
+      ]
+    },
+    {
+      "id": 894,
+      "label": "int[]",
+      "type": "LIST",
+      "items": [
+        [
+          "LONG",
+          1
+        ],
+        [
+          "LONG",
+          3
+        ],
+        [
+          "LONG",
+          6
+        ],
+        [
+          "LONG",
+          7
+        ],
+        [
+          "LONG",
+          299
+        ]
+      ]
+    },
+    {
+      "vals": [
+        [
+          "DOUBLE",
+          4.123
+        ],
+        [
+          "LONG",
+          5
+        ],
+        [
+          "STRING",
+          "blahblah"
+        ]
+      ],
+      "keys": [
+        "a",
+        "b",
+        "str"
+      ],
+      "id": 896,
+      "label": "A",
+      "type": "OBJECT"
+    },
+    {
+      "vals": [
+        [
+          "DOUBLE",
+          4.123
+        ],
+        [
+          "LONG",
+          5
+        ],
+        [
+          "STRING",
+          "blahblah"
+        ]
+      ],
+      "keys": [
+        "a",
+        "b",
+        "str"
+      ],
+      "id": 897,
+      "label": "A",
+      "type": "OBJECT"
+    },
+    {
+      "vals": [
+        [
+          "DOUBLE",
+          4.123
+        ],
+        [
+          "LONG",
+          5
+        ],
+        [
+          "STRING",
+          "blahblah"
+        ]
+      ],
+      "keys": [
+        "a",
+        "b",
+        "str"
+      ],
+      "id": 898,
+      "label": "A",
+      "type": "OBJECT"
+    },
+    {
+      "id": 900,
+      "label": "int[]",
+      "type": "LIST",
+      "items": []
+    },
+    {
+      "id": 901,
+      "label": "java.util.ArrayList",
+      "type": "LIST",
+      "items": []
+    },
+    {
+      "vals": [
+        [
+          "STRING",
+          "bbb"
+        ],
+        [
+          "STRING",
+          "very long val"
+        ],
+        [
+          "STRING",
+          "abc"
+        ]
+      ],
+      "keys": [
+        [
+          "STRING",
+          "aaa"
+        ],
+        [
+          "STRING",
+          "def"
+        ],
+        [
+          "STRING",
+          "very long key"
+        ]
+      ],
+      "id": 902,
+      "label": "java.util.HashMap",
+      "type": "MAP"
+    }
+  ]
+}

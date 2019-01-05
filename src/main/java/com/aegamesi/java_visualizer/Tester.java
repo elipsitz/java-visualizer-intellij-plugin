@@ -5,14 +5,12 @@ import com.aegamesi.java_visualizer.ui.VisualizationPanel;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 public class Tester {
-	private static final String tracePath = "/Users/eli/Desktop/trace.json";
-
 	public static void main(String[] args) throws Exception {
-		ExecutionTrace trace = makeTrace(tracePath);
+		ExecutionTrace trace = makeTrace();
 		VisualizationPanel panel = new VisualizationPanel();
 		panel.setTrace(trace);
 
@@ -25,8 +23,15 @@ public class Tester {
 		f.pack();
 	}
 
-	private static ExecutionTrace makeTrace(String path) throws Exception {
-		String json = new String(Files.readAllBytes(Paths.get(path)));
+	private static ExecutionTrace makeTrace() throws Exception {
+		InputStream is = Tester.class.getResourceAsStream("/sample_trace.json");
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		byte[] buf = new byte[1024];
+		int len;
+		while ((len = is.read(buf)) > 0) {
+			os.write(buf, 0, len);
+		}
+		String json = new String(os.toByteArray());
 		return ExecutionTrace.fromJsonString(json);
 	}
 }

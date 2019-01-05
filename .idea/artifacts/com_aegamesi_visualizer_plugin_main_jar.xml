@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="com.aegamesi.visualizer_plugin.main:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/com_aegamesi_visualizer_plugin_main_jar</output-path>
+    <root id="archive" name="com.aegamesi.visualizer_plugin.main.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/resources" />
+      <element id="module-output" name="com.aegamesi.visualizer_plugin.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.json/json/20180813/8566b2b0391d9d4479ea225645c6ed47ef17fe41/json-20180813.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
