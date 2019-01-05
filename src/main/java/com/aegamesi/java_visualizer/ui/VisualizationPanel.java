@@ -76,7 +76,13 @@ public class VisualizationPanel extends JPanel {
 			Rectangle refBounds = getRelativeBounds(this, ref);
 			long refId = ref.getValue().reference;
 			HeapEntityComponent obj = heapPanel.getHeapComponents().get(refId);
+			if (obj == null) {
+				continue; // shouldn't happen...
+			}
 			Rectangle objBounds = getRelativeBounds(this, obj);
+			if (refBounds == null || objBounds == null) {
+				continue;
+			}
 
 			PointerConnection p = new PointerConnection(
 					ref.isActive(),
