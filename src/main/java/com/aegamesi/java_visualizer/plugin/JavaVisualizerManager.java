@@ -1,7 +1,6 @@
 package com.aegamesi.java_visualizer.plugin;
 
 import com.aegamesi.java_visualizer.backend.Tracer;
-import com.aegamesi.java_visualizer.ui.VisualizationPanel;
 import com.intellij.debugger.DebuggerManager;
 import com.intellij.debugger.engine.DebugProcess;
 import com.intellij.debugger.engine.SuspendContext;
@@ -13,7 +12,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Key;
 import com.intellij.ui.AncestorListenerAdapter;
-import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.content.Content;
 import com.intellij.util.ui.UIUtil;
 import com.intellij.xdebugger.XDebugProcess;
@@ -22,7 +20,6 @@ import com.intellij.xdebugger.XDebugSessionListener;
 import com.sun.jdi.ThreadReference;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.JScrollPane;
 import javax.swing.event.AncestorEvent;
 
 public class JavaVisualizerManager implements XDebugSessionListener {
@@ -30,7 +27,7 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 
 	private XDebugSession debugSession;
 	private Content content;
-	private VisualizationPanel panel;
+	private MainPane panel;
 	private Project project;
 
 	JavaVisualizerManager(Project project, XDebugProcess debugProcess) {
@@ -60,19 +57,17 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 	}
 
 	private void initializeContent() {
-		panel = new VisualizationPanel();
+		panel = new MainPane();
 		panel.addAncestorListener(new AncestorListenerAdapter() {
 			public void ancestorAdded(AncestorEvent event) {
 				forceRefreshVisualizer();
 			}
 		});
 
-		JScrollPane scrollPane = new JBScrollPane(panel);
-
 		RunnerLayoutUi ui = debugSession.getUI();
 		content = ui.createContent(
 				CONTENT_ID,
-				scrollPane,
+				panel,
 				"Java Visualizer",
 				IconLoader.getIcon("/icons/viz.png"),
 				null);
