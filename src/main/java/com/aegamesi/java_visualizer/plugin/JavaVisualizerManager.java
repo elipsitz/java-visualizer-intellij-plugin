@@ -1,7 +1,6 @@
 package com.aegamesi.java_visualizer.plugin;
 
 import com.aegamesi.java_visualizer.backend.Tracer;
-import com.aegamesi.java_visualizer.model.ExecutionTrace;
 import com.aegamesi.java_visualizer.ui.VisualizationPanel;
 import com.intellij.debugger.DebuggerManager;
 import com.intellij.debugger.engine.DebugProcess;
@@ -29,20 +28,16 @@ import javax.swing.event.AncestorEvent;
 public class JavaVisualizerManager implements XDebugSessionListener {
 	private static final String CONTENT_ID = "aegamesi.JavaVisualizerContent2";
 
-	private XDebugProcess debugProcess;
 	private XDebugSession debugSession;
 	private Content content;
 	private VisualizationPanel panel;
 	private Project project;
 
-	public JavaVisualizerManager(Project project, XDebugProcess process) {
+	JavaVisualizerManager(Project project, XDebugProcess debugProcess) {
 		this.project = project;
-		this.debugProcess = process;
-		this.debugSession = process.getSession();
+		this.debugSession = debugProcess.getSession();
 		this.content = null;
-	}
 
-	public void attach() {
 		debugProcess.getProcessHandler().addProcessListener(new ProcessListener() {
 			@Override
 			public void startNotified(@NotNull ProcessEvent processEvent) {
@@ -64,7 +59,6 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 		debugSession.addSessionListener(this);
 	}
 
-
 	private void initializeContent() {
 		panel = new VisualizationPanel();
 		panel.addAncestorListener(new AncestorListenerAdapter() {
@@ -82,6 +76,7 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 				"Java Visualizer",
 				IconLoader.getIcon("/icons/viz.png"),
 				null);
+		content.setCloseable(false);
 		UIUtil.invokeLaterIfNeeded(() -> ui.addContent(content));
 	}
 
@@ -103,16 +98,18 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 	private void forceRefreshVisualizer() {
 		try {
 			DebugProcess p = DebuggerManager.getInstance(project).getDebugProcess(debugSession.getDebugProcess().getProcessHandler());
-			p.getManagerThread().invokeCommand(new DebuggerCommand() {
-				@Override
-				public void action() {
-					traceAndVisualize();
-				}
+			if (p != null) {
+				p.getManagerThread().invokeCommand(new DebuggerCommand() {
+					@Override
+					public void action() {
+						traceAndVisualize();
+					}
 
-				@Override
-				public void commandCancelled() {
-				}
-			});
+					@Override
+					public void commandCancelled() {
+					}
+				});
+			}
 		} catch (Exception e) {
 			System.out.println("unable to force refresh visualizer: " + e);
 		}
@@ -121,19 +118,13 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 	private void traceAndVisualize() {
 		try {
 			SuspendContext sc = (SuspendContext) debugSession.getSuspendContext();
-			if (sc == null) {
+			if (sc == null || sc.getThread() == null) {
 				return;
 			}
-			ThreadReference reference = sc.getThread().getThreadReference();
+			ThreadReference thread = sc.getThread().getThreadReference();
 
-			Tracer t = new Tracer(reference);
-			ExecutionTrace model = t.getModel();
-
-			/*ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("/tmp/jv.ser"));
-			o.writeObject(model);
-			o.close();*/
-
-			panel.setTrace(model);
+			Tracer t = new Tracer(thread);
+			panel.setTrace(t.getModel());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -18,22 +18,9 @@ public class JavaVisualizerComponent implements ProjectComponent {
 		conn.subscribe(XDebuggerManager.TOPIC, new XDebuggerManagerListener() {
 			@Override
 			public void processStarted(@NotNull XDebugProcess xDebugProcess) {
-				attachToDebugger(xDebugProcess);
-			}
-
-			@Override
-			public void processStopped(@NotNull XDebugProcess xDebugProcess) {
+				new JavaVisualizerManager(project, xDebugProcess);
 			}
 		});
-	}
-
-	private void attachToDebugger(XDebugProcess xDebugProcess) {
-		JavaVisualizerManager manager = new JavaVisualizerManager(project, xDebugProcess);
-		manager.attach();
-	}
-
-	@Override
-	public void projectOpened() {
 	}
 
 	@NotNull
