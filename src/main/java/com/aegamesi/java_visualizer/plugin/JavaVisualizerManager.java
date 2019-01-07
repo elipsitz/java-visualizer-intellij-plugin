@@ -1,6 +1,7 @@
 package com.aegamesi.java_visualizer.plugin;
 
 import com.aegamesi.java_visualizer.backend.Tracer;
+import com.brsanthu.googleanalytics.GoogleAnalytics;
 import com.intellij.debugger.DebuggerManager;
 import com.intellij.debugger.engine.DebugProcess;
 import com.intellij.debugger.engine.SuspendContext;
@@ -25,15 +26,18 @@ import javax.swing.event.AncestorEvent;
 public class JavaVisualizerManager implements XDebugSessionListener {
 	private static final String CONTENT_ID = "aegamesi.JavaVisualizerContent2";
 
+	private GoogleAnalytics ga;
+
+	private Project project;
 	private XDebugSession debugSession;
 	private Content content;
 	private MainPane panel;
-	private Project project;
 
-	JavaVisualizerManager(Project project, XDebugProcess debugProcess) {
+	JavaVisualizerManager(Project project, XDebugProcess debugProcess, GoogleAnalytics ga) {
 		this.project = project;
 		this.debugSession = debugProcess.getSession();
 		this.content = null;
+		this.ga = ga;
 
 		debugProcess.getProcessHandler().addProcessListener(new ProcessListener() {
 			@Override
@@ -61,6 +65,8 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 		panel.addAncestorListener(new AncestorListenerAdapter() {
 			public void ancestorAdded(AncestorEvent event) {
 				forceRefreshVisualizer();
+
+				ga.event().eventCategory("VizTab").eventAction("Open").sendAsync();
 			}
 		});
 
@@ -86,6 +92,7 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 				traceAndVisualize();
 			}
 		} catch (Exception e) {
+			ga.exception().exceptionDescription("L1: " + e.getMessage()).sendAsync();
 			e.printStackTrace();
 		}
 	}
@@ -107,6 +114,7 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 			}
 		} catch (Exception e) {
 			System.out.println("unable to force refresh visualizer: " + e);
+			ga.exception().exceptionDescription("L2: " + e.getMessage()).sendAsync();
 		}
 	}
 
@@ -122,6 +130,7 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 			panel.setTrace(t.getModel());
 		} catch (Exception e) {
 			e.printStackTrace();
+			ga.exception().exceptionDescription("L3: " + e.getMessage()).sendAsync();
 		}
 	}
 }
