@@ -20,6 +20,11 @@ public class JavaVisualizerComponent implements ProjectComponent {
 			public void processStarted(@NotNull XDebugProcess xDebugProcess) {
 				new JavaVisualizerManager(project, xDebugProcess);
 			}
+
+			@Override
+			public void processStopped(@NotNull XDebugProcess debugProcess) {
+				// empty, must be here for compatibility with pre-182.5107.16
+			}
 		});
 	}
 
