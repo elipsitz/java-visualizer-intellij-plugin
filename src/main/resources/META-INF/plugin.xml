@@ -10,6 +10,7 @@
 
   <change-notes><![CDATA[
       Standardize appearance on all platforms and increase spacing.
+      Mousing over a pointer arrow will change its color.
     ]]>
   </change-notes>
 

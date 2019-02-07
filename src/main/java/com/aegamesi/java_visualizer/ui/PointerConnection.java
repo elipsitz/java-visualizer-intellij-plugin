@@ -29,9 +29,9 @@ class PointerConnection {
 
 	private static Path2D makeArrow() {
 		Path2D.Double p = new Path2D.Double();
-		p.moveTo(1.0, 0.0);
+		p.moveTo(2.0, 0.0);
 		p.lineTo(-9.0, -3.5);
-		p.lineTo(-4.5, 0.0);
+		// p.lineTo(-4.5, 0.0);
 		p.lineTo(-9.0, 3.5);
 		p.closePath();
 		return p;
@@ -86,7 +86,10 @@ class PointerConnection {
 	}
 
 	boolean isNear(int x, int y) {
-		return mainShape.intersects(x - 2, y - 2, 4, 4);
+		if (mainShape.intersects(x - 2, y - 2, 4, 4)) {
+			return true;
+		}
+		return Math.abs(x - x1) < 8 && Math.abs(y - y1) < 8;
 	}
 
 	void paint(Graphics2D g) {
