@@ -10,7 +10,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.aegamesi.java_visualizer.ui.Constants.*;
@@ -23,11 +26,30 @@ public class VisualizationPanel extends JPanel {
 	private StackPanel stackPanel;
 	private HeapPanel heapPanel;
 
+	private PointerConnection selectedPointer;
+
 	public VisualizationPanel() {
 		setBackground(colorBackground);
 		setLayout(null);
 		referenceComponents = new ArrayList<>();
 		pointerConnections = new ArrayList<>();
+
+		addMouseMotionListener(new MouseAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				PointerConnection sel = getSelectedPointer(e.getX(), e.getY());
+				if (sel != selectedPointer) {
+					if (selectedPointer != null) {
+						selectedPointer.setSelected(false);
+					}
+					selectedPointer = sel;
+					if (selectedPointer != null) {
+						selectedPointer.setSelected(true);
+					}
+					repaint();
+				}
+			}
+		});
 	}
 
 	public void setTrace(ExecutionTrace t) {
@@ -122,5 +144,25 @@ public class VisualizationPanel extends JPanel {
 		if (component.getValue().type == Value.Type.REFERENCE) {
 			referenceComponents.add(component);
 		}
+	}
+
+	private PointerConnection getSelectedPointer(int x, int y) {
+		if (pointerConnections == null) {
+			return null;
+		}
+		PointerConnection selected = null;
+		Iterator<PointerConnection> i = pointerConnections.iterator();
+		while (i.hasNext()) {
+			PointerConnection p = i.next();
+			if (p.isNear(x, y)) {
+				selected = p;
+				i.remove();
+				break;
+			}
+		}
+		if (selected != null) {
+			pointerConnections.add(selected);
+		}
+		return selected;
 	}
 }

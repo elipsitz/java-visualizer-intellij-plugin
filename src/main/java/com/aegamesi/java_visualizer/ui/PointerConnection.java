@@ -1,5 +1,6 @@
 package com.aegamesi.java_visualizer.ui;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -12,6 +13,7 @@ class PointerConnection {
 	private Shape mainShape;
 	private Path2D arrow;
 
+	private boolean selected;
 	private boolean active;
 	private double x1, y1, x2, y2;
 
@@ -79,8 +81,23 @@ class PointerConnection {
 		arrow.transform(AffineTransform.getTranslateInstance(x2, y2));
 	}
 
+	void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	boolean isNear(int x, int y) {
+		return mainShape.intersects(x - 2, y - 2, 4, 4);
+	}
+
 	void paint(Graphics2D g) {
-		g.setColor(active ? Constants.colorPointer : Constants.colorPointerInactive);
+		Color c = Constants.colorPointerInactive;
+		if (active) {
+			c = Constants.colorPointer;
+			if (selected) {
+				c = Constants.colorPointerSelected;
+			}
+		}
+		g.setColor(c);
 		g.draw(mainShape);
 		int r = Constants.pointerSrcRadius;
 		g.fillOval((int) (x1 - r), (int) (y1 - r), r * 2, r * 2);
