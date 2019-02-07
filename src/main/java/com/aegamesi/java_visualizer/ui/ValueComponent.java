@@ -23,7 +23,7 @@ class ValueComponent extends JPanel {
 		setOpaque(false);
 		setLayout(new BorderLayout());
 
-		JLabel label = new JLabel(val.toString());
+		JLabel label = new CustomJLabel(val.toString());
 		label.setForeground(Constants.colorText);
 		if (val.type == Value.Type.STRING) {
 			label.setFont(Constants.fontUIMono);

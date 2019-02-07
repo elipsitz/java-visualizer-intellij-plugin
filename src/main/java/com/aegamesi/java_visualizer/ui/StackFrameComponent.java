@@ -27,7 +27,7 @@ class StackFrameComponent extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(new MatteBorder(0, 1, 0, 0, Constants.colorFrameOutline));
 
-		JLabel labelName = new JLabel(frame.name, JLabel.LEFT);
+		JLabel labelName = new CustomJLabel(frame.name, JLabel.LEFT);
 		labelName.setFont(Constants.fontUIMono);
 		labelName.setForeground(Constants.colorText);
 		labelName.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -38,7 +38,7 @@ class StackFrameComponent extends JPanel {
 		List<JComponent> keys = new ArrayList<>();
 		List<JComponent> vals = new ArrayList<>();
 		for (Map.Entry<String, Value> local : frame.locals.entrySet()) {
-			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
+			JLabel localLabel = new CustomJLabel(local.getKey(), JLabel.RIGHT);
 			localLabel.setForeground(Constants.colorText);
 			localLabel.setFont(Constants.fontUI);
 			ValueComponent value = new ValueComponent(viz, local.getValue(), first);

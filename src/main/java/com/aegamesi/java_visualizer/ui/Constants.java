@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.InputStream;
 
 class Constants {
 	static final Color colorBackground = new Color(0xFF, 0xFF, 0xFF);
@@ -24,10 +27,10 @@ class Constants {
 	static final Color colorPointerInactive = new Color(0xCC, 0xCC, 0xCC);
 	static final Color colorPointerSelected = new Color(0xE9, 0x3F, 0x34);
 
-	static final Font fontTitle = new Font(Font.SANS_SERIF, Font.BOLD, 14);
-	static final Font fontUI = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-	static final Font fontUIMono = new Font(Font.MONOSPACED, Font.PLAIN, 12);
-	static final Font fontUISmall = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
+	static final Font fontTitle = getFont("source-sans", Font.PLAIN, 18);
+	static final Font fontUI = getFont("source-sans", Font.PLAIN, 14);
+	static final Font fontUIMono = getFont("source-code", Font.PLAIN, 12);
+	static final Font fontUISmall = getFont("source-sans", Font.PLAIN, 12);
 
 	static final int padOuter = 8;
 	static final int padTitle = 16;
@@ -58,5 +61,16 @@ class Constants {
 			return null;
 		}
 		return r;
+	}
+
+	private static Font getFont(String name, int style, float size) {
+		try {
+			InputStream is = Constants.class.getResourceAsStream("/fonts/" + name + ".ttf");
+			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+			return font.deriveFont(style, size);
+		} catch (IOException | FontFormatException e) {
+			System.out.println(e);
+			return null;
+		}
 	}
 }

@@ -28,7 +28,7 @@ class HeapEntityComponent extends JPanel {
 		setLayout(new BorderLayout());
 		// setBorder(JBUI.Borders.empty(8));
 
-		JLabel topLabel = new JLabel(entity.label);
+		JLabel topLabel = new CustomJLabel(entity.label);
 		topLabel.setFont(Constants.fontUISmall);
 		topLabel.setForeground(Constants.colorHeapLabel);
 		add(topLabel, BorderLayout.NORTH);
@@ -60,9 +60,10 @@ class HeapEntityComponent extends JPanel {
 			List<JLabel> keys = new ArrayList<>();
 			List<ValueComponent> vals = new ArrayList<>();
 			for (Map.Entry<String, Value> local : e.fields.entrySet()) {
-				JLabel key = new JLabel(local.getKey(), JLabel.RIGHT);
+				JLabel key = new CustomJLabel(local.getKey(), JLabel.RIGHT);
 				key.setFont(Constants.fontUI);
 				key.setForeground(Constants.colorText);
+
 				ValueComponent val = new ValueComponent(viz, local.getValue());
 				valueComponents.add(val);
 				keys.add(key);
@@ -111,7 +112,7 @@ class HeapEntityComponent extends JPanel {
 				ValueComponent value = new ValueComponent(viz, e.items.get(i));
 				valueComponents.add(value);
 				Dimension size = value.getPreferredSize();
-				JLabel indexLabel = new JLabel(Integer.toString(i));
+				JLabel indexLabel = new CustomJLabel(Integer.toString(i));
 				indexLabel.setFont(Constants.fontUISmall);
 				indexLabel.setForeground(Constants.colorHeapLabel);
 				Dimension indexSize = indexLabel.getPreferredSize();
