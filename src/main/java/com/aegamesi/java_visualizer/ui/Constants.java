@@ -33,8 +33,8 @@ class Constants {
 	static final int padTitle = 16;
 	static final int padCenter = 64;
 	static final int padStackVertical = 8;
-	static final int padHeapVertical = 8;
-	static final int padHeapHorizontal = 16;
+	static final int padHeapVertical = 16;
+	static final int padHeapHorizontal = 32;
 	static final int padHeapContinuation = 32;
 	static final int padHeapMap = 4;
 
