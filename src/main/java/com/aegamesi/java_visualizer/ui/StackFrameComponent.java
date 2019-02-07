@@ -29,6 +29,7 @@ class StackFrameComponent extends JPanel {
 
 		JLabel labelName = new JLabel(frame.name, JLabel.LEFT);
 		labelName.setFont(Constants.fontUIMono);
+		labelName.setForeground(Constants.colorText);
 		labelName.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		labelName.setAlignmentX(RIGHT_ALIGNMENT);
 		labelName.setMaximumSize(Constants.maxDimension);
@@ -38,6 +39,7 @@ class StackFrameComponent extends JPanel {
 		List<JComponent> vals = new ArrayList<>();
 		for (Map.Entry<String, Value> local : frame.locals.entrySet()) {
 			JLabel localLabel = new JLabel(local.getKey(), JLabel.RIGHT);
+			localLabel.setForeground(Constants.colorText);
 			localLabel.setFont(Constants.fontUI);
 			ValueComponent value = new ValueComponent(viz, local.getValue(), first);
 			Border b1 = new MatteBorder(0, 1, 1, 0, Constants.colorFrameOutline);

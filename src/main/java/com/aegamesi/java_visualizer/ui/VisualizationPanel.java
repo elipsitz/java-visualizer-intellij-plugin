@@ -44,6 +44,8 @@ public class VisualizationPanel extends JPanel {
 	private void buildUI() {
 		JLabel labelStack = new JLabel("Call Stack", JLabel.RIGHT);
 		JLabel labelHeap = new JLabel("Objects", JLabel.LEFT);
+		labelStack.setForeground(Constants.colorText);
+		labelHeap.setForeground(Constants.colorText);
 		labelStack.setFont(fontTitle);
 		labelHeap.setFont(fontTitle);
 		stackPanel = new StackPanel(this, trace.frames);

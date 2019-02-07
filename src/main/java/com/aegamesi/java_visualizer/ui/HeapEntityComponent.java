@@ -62,6 +62,7 @@ class HeapEntityComponent extends JPanel {
 			for (Map.Entry<String, Value> local : e.fields.entrySet()) {
 				JLabel key = new JLabel(local.getKey(), JLabel.RIGHT);
 				key.setFont(Constants.fontUI);
+				key.setForeground(Constants.colorText);
 				ValueComponent val = new ValueComponent(viz, local.getValue());
 				valueComponents.add(val);
 				keys.add(key);
