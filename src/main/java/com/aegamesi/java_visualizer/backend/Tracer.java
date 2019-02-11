@@ -340,7 +340,7 @@ public class Tracer {
 			out.type = Value.Type.DOUBLE;
 			out.doubleValue = ((DoubleValue) v).value();
 		} else if (v instanceof CharValue) {
-			out.type = Value.Type.LONG;
+            out.type = Value.Type.CHAR;
 			out.charValue = ((CharValue) v).value();
 		} else if (v instanceof VoidValue) {
 			out.type = Value.Type.VOID;
