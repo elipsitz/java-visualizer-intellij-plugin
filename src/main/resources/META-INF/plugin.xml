@@ -9,8 +9,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      Standardize appearance on all platforms and increase spacing.
-      Mousing over a pointer arrow will change its color.
+      Fix bug where 'char's would show up as "0" instead of their actual value.
     ]]>
   </change-notes>
 
