@@ -94,6 +94,9 @@ public class VisualizationPanel extends JPanel {
 	}
 
 	private void computePointerPaths() {
+		if (heapPanel == null) {
+			return;
+		}
 		pointerConnections.clear();
 
 		for (ValueComponent ref : referenceComponents) {
