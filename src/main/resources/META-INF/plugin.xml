@@ -9,7 +9,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      Fix bug where 'char's would show up as "0" instead of their actual value.
+      Add buttons to increase and decrease the zoom of the visualizer.
     ]]>
   </change-notes>
 
