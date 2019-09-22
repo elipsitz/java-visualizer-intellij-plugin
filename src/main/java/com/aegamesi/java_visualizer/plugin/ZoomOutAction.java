@@ -1,13 +1,16 @@
 package com.aegamesi.java_visualizer.plugin;
 
-import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import org.jetbrains.annotations.NotNull;
 
 public class ZoomOutAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
-        PropertiesComponent props = PropertiesComponent.getInstance();
+        MainPane pane = (MainPane) e.getData(PlatformDataKeys.CONTEXT_COMPONENT);
+        if (pane != null) {
+            pane.zoom(-1);
+        }
     }
 }

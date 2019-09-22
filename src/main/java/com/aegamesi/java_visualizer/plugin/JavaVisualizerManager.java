@@ -29,6 +29,9 @@ import javax.swing.event.AncestorEvent;
 public class JavaVisualizerManager implements XDebugSessionListener {
 	private static final String CONTENT_ID = "aegamesi.JavaVisualizerContent2";
 
+	static final String PROPERTY_KEY_BASE = "java_visualizer.";
+	static final String KEY_ZOOM = PROPERTY_KEY_BASE + "zoom";
+
 	private XDebugSession debugSession;
 	private Content content;
 	private MainPane panel;
@@ -75,6 +78,7 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 				(DefaultActionGroup) actionManager.getAction("JavaVisualizer.VisualizerToolbar"),
 				false
 		);
+		actionToolbar.setTargetComponent(panel);
 		container.setToolbar(actionToolbar.getComponent());
 		container.setContent(panel);
 

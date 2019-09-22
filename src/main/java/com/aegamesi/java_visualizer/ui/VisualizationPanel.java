@@ -20,6 +20,7 @@ import static com.aegamesi.java_visualizer.ui.Constants.*;
 
 public class VisualizationPanel extends JPanel {
 	private ExecutionTrace trace = null;
+    private double scale = 1.0;
 
 	private List<ValueComponent> referenceComponents;
 	private List<PointerConnection> pointerConnections;
@@ -37,7 +38,9 @@ public class VisualizationPanel extends JPanel {
 		addMouseMotionListener(new MouseAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				PointerConnection sel = getSelectedPointer(e.getX(), e.getY());
+                int px = (int) (e.getX() / scale);
+                int py = (int) (e.getY() / scale);
+                PointerConnection sel = getSelectedPointer(px, py);
 				if (sel != selectedPointer) {
 					if (selectedPointer != null) {
 						selectedPointer.setSelected(false);
@@ -52,16 +55,27 @@ public class VisualizationPanel extends JPanel {
 		});
 	}
 
-	public void setTrace(ExecutionTrace t) {
-		this.trace = t;
-		referenceComponents.clear();
-		removeAll();
+    public void setTrace(ExecutionTrace t) {
+        this.trace = t;
+        refreshUI();
+    }
 
-		buildUI();
+    public void setScale(double scale) {
+        this.scale = scale;
+        if (this.trace != null) {
+            refreshUI();
+        }
+    }
 
-		revalidate();
-		repaint();
-	}
+    private void refreshUI() {
+        referenceComponents.clear();
+        removeAll();
+
+        buildUI();
+
+        revalidate();
+        repaint();
+    }
 
 	private void buildUI() {
 		JLabel labelStack = new CustomJLabel("Call Stack", JLabel.RIGHT);
@@ -87,10 +101,10 @@ public class VisualizationPanel extends JPanel {
 		labelHeap.setBounds(padOuter + stackWidth + padCenter, padOuter, heapWidth, labelHeight);
 		stackPanel.setBounds(padOuter, padOuter + labelHeight + padTitle, stackWidth, sizeStack.height);
 		heapPanel.setBounds(padOuter + stackWidth + padCenter, padOuter + labelHeight + padTitle, heapWidth, sizeHeap.height);
-		setPreferredSize(new Dimension(
-				(padOuter * 2) + stackWidth + padCenter + heapWidth,
-				(padOuter * 2) + labelHeight + padTitle + Math.max(sizeStack.height, sizeHeap.height)
-		));
+
+        int outerWidth = (padOuter * 2) + stackWidth + padCenter + heapWidth;
+        int outerHeight = (padOuter * 2) + labelHeight + padTitle + Math.max(sizeStack.height, sizeHeap.height);
+        setPreferredSize(new Dimension((int) (outerWidth * scale), (int) (outerHeight * scale)));
 	}
 
 	private void computePointerPaths() {
@@ -124,8 +138,10 @@ public class VisualizationPanel extends JPanel {
 
 	@Override
 	protected void paintChildren(Graphics _g) {
-		super.paintChildren(_g);
 		Graphics2D g = (Graphics2D) _g;
+        g.scale(scale, scale);
+
+        super.paintChildren(g);
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		for (PointerConnection p : pointerConnections) {
