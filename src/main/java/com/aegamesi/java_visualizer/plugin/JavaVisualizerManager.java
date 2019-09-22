@@ -8,7 +8,11 @@ import com.intellij.debugger.engine.managerThread.DebuggerCommand;
 import com.intellij.execution.process.ProcessEvent;
 import com.intellij.execution.process.ProcessListener;
 import com.intellij.execution.ui.RunnerLayoutUi;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionToolbar;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.Key;
 import com.intellij.ui.AncestorListenerAdapter;
@@ -64,10 +68,20 @@ public class JavaVisualizerManager implements XDebugSessionListener {
 			}
 		});
 
+		SimpleToolWindowPanel container = new SimpleToolWindowPanel(false, true);
+		final ActionManager actionManager = ActionManager.getInstance();
+		ActionToolbar actionToolbar = actionManager.createActionToolbar(
+				"JavaVisualizer.VisualizerToolbar",
+				(DefaultActionGroup) actionManager.getAction("JavaVisualizer.VisualizerToolbar"),
+				false
+		);
+		container.setToolbar(actionToolbar.getComponent());
+		container.setContent(panel);
+
 		RunnerLayoutUi ui = debugSession.getUI();
 		content = ui.createContent(
 				CONTENT_ID,
-				panel,
+				container,
 				"Java Visualizer",
 				IconLoader.getIcon("/icons/viz.png"),
 				null);

@@ -14,7 +14,7 @@
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="181.0"/>
+  <idea-version since-build="182.0"/>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
@@ -27,5 +27,24 @@
       <loadForDefaultProject />
     </component>
   </project-components>
+
+  <actions>
+    <group id="JavaVisualizer.VisualizerToolbar" popup="false">
+      <action
+              id="JavaVisualizer.ZoomInAction"
+              class="com.aegamesi.java_visualizer.plugin.ZoomInAction"
+              text="Zoom In"
+              description="Zoom in visualizer"
+              icon="/icons/magnify-plus.svg"
+      />
+      <action
+              id="JavaVisualizer.ZoomOutAction"
+              class="com.aegamesi.java_visualizer.plugin.ZoomOutAction"
+              text="Zoom Out"
+              description="Zoom out visualizer"
+              icon="/icons/magnify-minus.svg"
+      />
+    </group>
+  </actions>
 
 </idea-plugin>
