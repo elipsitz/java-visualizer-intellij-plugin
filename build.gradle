@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.aegamesi'
-version '2.1.0'
+version '2.2.0'
 
 sourceCompatibility = 1.8
 
@@ -18,9 +18,10 @@ dependencies {
 }
 
 intellij {
-    version '2018.3.2'
-    sandboxDirectory = "${System.properties['user.home']}/Library/Caches/IntelliJIdea2018.3/plugins-sandbox/"
+    version '2019.3.5'
+    sandboxDirectory = "${System.properties['user.home']}/Library/Caches/IntelliJIdea2019.3/plugins-sandbox/"
     updateSinceUntilBuild false
+    plugins = ['java']
 }
 
 patchPluginXml {
