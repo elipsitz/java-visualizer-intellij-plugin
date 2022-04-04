@@ -9,8 +9,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      Changes to stop using components deprecated in IntelliJ 2019.3, ensuring future
-      compatibility.
+      Minor update to stop using deprecated API.
     ]]>
   </change-notes>
 
